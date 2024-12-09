@@ -4,13 +4,14 @@ public class Accio {
     private Associacio[] associacionsOrganitzadores;
     private Membre responsable;
     private int tamany;
+    private String tipus; //Pot ser xerrada o demostració//
 
-    public Accio(String codi, String titol, int capacitat, Membre responsable) {
+    public Accio(String codi, String titol,Associacio[] associacionsOrganitzadores, Membre responsable, String tipus) {
         this.codi = codi;
         this.titol = titol;
-        this.associacionsOrganitzadores = new Associacio[capacitat];
+        this.associacionsOrganitzadores = associacionsOrganitzadores;
         this.responsable = responsable;
-        this.tamany = 0;
+        this.tipus=tipus;
     }
 
     public String obtenirCodi() {
@@ -19,6 +20,14 @@ public class Accio {
 
     public String obtenirTitol() {
         return titol;
+    }
+
+    public boolean esXerrada(){
+        return "Xerrada".equalsIgnoreCase(this.tipus);
+    }
+
+    public boolean esDemostracio(){
+        return "Demostracio".equalsIgnoreCase(this.tipus);
     }
 
     public void afegirAssociacio(Associacio associacio) {
@@ -42,7 +51,7 @@ public class Accio {
             info += associacionsOrganitzadores[i].getNom() + ", ";
         }
         if (tamany > 0) {
-            info = info.substring(0, info.length() - 2); // Retirem l'última coma
+            info = info.substring(0, info.length() - 2);
         }
         return info;
     }

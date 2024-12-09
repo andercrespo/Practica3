@@ -3,7 +3,7 @@ import java.time.LocalDate;
 public class Associacio {
     private String nom;
     private String correuContacte;
-    private String titulacions[];
+    private String[] titulacions;
     private LlistaMembres membres;
     private LlistaMembres membresActius;
     private Alumne president;
@@ -11,7 +11,7 @@ public class Associacio {
     private Alumne tresorer;
 
     //Constructor//
-    public Associacio (String nom,String correuContacte, String[] titulacions, LlistaMembres membres, LlistaMembres membresActius, Alumne president, Alumne secretari, Allumne tresorer){
+    public Associacio (String nom,String correuContacte, String[] titulacions, LlistaMembres membres, LlistaMembres membresActius, Alumne president, Alumne secretari, Alumne tresorer){
         this.nom=nom;
         this.correuContacte=correuContacte;
         this.titulacions=titulacions;
@@ -82,91 +82,32 @@ public class Associacio {
     //Gestió de membres// 
 
     public void afegirMembre(Membre membre){
-        membres[tamany]=membre;
+        membres.afegirMembre(membre);
         if(membre.getDataBaixa()==null){
-            membresActius[tamany]=membre;
+            membresActius.afegirMembre(membre);
         }
     }
 
-    public void donarDeBaixaMembre(Membre membre, LocalDate dataBaixa){
-        int i=0;
-        boolean trobat = false;
-        while(!trobat){
-            if(membres[i]==membre){
-                trobat=true;
-            }
-            else{
-                i++;
-            }
-        }
-        for(int j=i;j<tamany;j++){
-            membres[j]=membres[j+1];
-        }
-        membre.dataBaixa=donarBaixa(dataBaixa);
+    public void donarDeBaixaMembre(Membre membre, LocalDate[] dataBaixa){
+        membre.donarBaixa(dataBaixa);
+        membresActius.eliminarMembre(membre.getAlies());
     }
 
     public LlistaMembres obtenirMembresActius(){
-        Membre[] llistaMembresActius = new Membre[capacitat];
-        int j=0;
-        for(int i=0; i<tamany;i++){
-            if(membres[i].esActiu()){
-                llistaMembresActius[j]=membres[i];
-                j++;
-            }
-        }
-        return llistaMembresActius;
+        return membresActius;
     }
 
     public LlistaMembres obtenirMembresFiltrats(boolean inclouProfessors,boolean inclouAlumnes){
-        Membre[] llistaMembresFiltrats = new Membre[capacitat];
-        int j=0;
-        for(int i=0; i<tamany;i++){
-            if(inclouProfessors==true && inclouAlumnes==true){
-                if(membres[i].esProfessor() && membres[i].esAlumne()){
-                    llistaMembresFiltrats[j]=membres[i];
-                    j++;
-                }
-            }
-            if(inclouProfessors==false && inclouAlumnes==true){
-                if(!membres[i].esProfessor() && membres[i].esAlumne()){
-                    llistaMembresFiltrats[j]=membres[i];
-                    j++;
-                }
-            }
-            if(inclouProfessors==true && inclouAlumnes==false){
-                if(membres[i].esProfessor() && !membres[i].esAlumne()){
-                    llistaMembresFiltrats[j]=membres[i];
-                    j++;
-                }
-            }
-            //Si se pot estar a una associacio sense ser professor o alumne deixar el if seguent sino llevarlo//
-            if(inclouProfessors==false && inclouAlumnes==false){
-                if(membres[i].esProfessor() && membres[i].esAlumne()){
-                    llistaMembresFiltrats[j]=membres[i];
-                    j++;
-                }
-            }
-        }
-        return llistaMembresFiltrats;
-    }
+        LlistaMembres filtrats = new LlistaMembres(membres.getTamany());
+        for (Membre membre : membres.getMembres()) {
+            boolean esProfessor = membre.esProfessor();
+            boolean esAlumne = membre.esAlumne();
 
-    public static boolean identificarMembre(Membre membre) {
-        if (membre instanceof Professor) {
-            return true;
+            if ((inclouProfessors && esProfessor) || (inclouAlumnes && esAlumne)) {
+                filtrats.afegirMembre(membre);
+            }
         }
-        else{
-            return false;
-        }
-    }
-
-
-    public boolean esAlumne(Membre membre){
-        if (membre instanceof Alumne) {
-            return true;
-        }
-        else{
-            return false;
-        }
+        return filtrats;
     }
 
 
@@ -193,9 +134,18 @@ public class Associacio {
     }
 
     //Altres funcions//
-    public String obtenirInformacio (){
+
+    public String obtenirInformacio() {
         String stringTitulacions = String.join(", ", titulacions);
-        String stringActius = String.join(", ", membresActius);
-        System.out.println("L'associació"+ nom +" ,té com a correu de contacte"+ correuContacte +" i esta formada per alumnes d'aquestes titulacions:"+ stringTitulacions +". I té els seguents membres en actiu:\n"+ stringActius);
+        Membre[] membres = membresActius.getMembres();
+        String stringActius = membres[0].getAlies();
+        for(int i = 1; i<membresActius.getTamany();i++){
+            stringActius= String.join(stringActius,",\n ", membres[i].getAlies());
+        }
+        String info = "L'associació " + nom + " té com a correu de contacte " + correuContacte + 
+                    " i està formada per alumnes d'aquestes titulacions: " + stringTitulacions + 
+                    ". I té els següents membres en actiu:\n" + stringActius;
+
+        return info;
     }
 }

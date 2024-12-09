@@ -1,8 +1,11 @@
-public class Professor {
+import java.time.LocalDate;
+
+public class Professor extends Membre{
     private String departament;
     private int despatx;
 
-    public Professor(String departament, int despatx){
+    public Professor(String alies, String correu, LocalDate[] dataAlta, LocalDate[] dataBaixa, LlistaAssociacio associacions, String tipus, String departament, int despatx){
+        super(alies, correu, dataAlta, dataBaixa,associacions,tipus);
         this.departament = departament;
         this.despatx = despatx;
     }
@@ -30,4 +33,3 @@ public class Professor {
     }
 
 }
-

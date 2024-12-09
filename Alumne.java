@@ -7,15 +7,13 @@ public class Alumne extends Membre {
     boolean graduat;
     
     // Constructor 
-    public Alumne(String alies, String correu, LocalDate dataAlta, String ensenyament, int anysETSE, boolean graduat){
-        
-        super(alies, correu, new LocalDate[] { dataAlta, null, null });
+    public Alumne(String alies, String correu, LocalDate[] dataAlta, LocalDate[] dataBaixa, LlistaAssociacio associacions, String tipus, String ensenyament, int anysETSE, boolean graduat){
+        super(alies, correu, dataAlta, dataBaixa,associacions,tipus);
         this.ensenyament = ensenyament;
         this.anysETSE = anysETSE;
         this.graduat = graduat;
     }
-
-    // ?????
+    
     public String getEnsenyament(){
         return ensenyament;
     }

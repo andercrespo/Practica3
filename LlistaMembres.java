@@ -8,6 +8,14 @@ public class LlistaMembres {
         tamany = 0;
     }
 
+    public Membre[] getMembres(){
+        return membres;
+    }
+
+    public int getTamany(){
+        return tamany;
+    }
+
     public void afegirMembre(Membre membre){
         if(tamany == capacitat){
             capacitat = capacitat*2;

@@ -13,19 +13,20 @@ public class LlistaAccions {
 
 
     public void afegirAccio(Accio accio) {
-        if (tamany == accions.length) {
-            Accio[] nouArray = new Accio[accions.length * 2];
-        for (int i = 0; i < accions.length; i++) {
-            nouArray[i] = accions[i];
+        if (tamany == capacitat) {
+            Accio[] nouArray = new Accio[capacitat * 2];
+            for (int i = 0; i < tamany; i++) {
+                nouArray[i] = accions[i];
+            }
+            accions = nouArray;
         }
-        accions = nouArray;
-        }
-        accions[tamany++] = accio;
+        accions[tamany] = accio;
+        tamany++;
     }
 
     public boolean eliminarAccio(String codi) {
         for (int i = 0; i < tamany; i++) {
-            if (accions[i].getCodi().equals(codi)) {
+            if (accions[i].obtenirCodi().equals(codi)) {
                 accions[i] = accions[tamany - 1]; 
                 accions[tamany - 1] = null; 
                 tamany--;
@@ -34,47 +35,55 @@ public class LlistaAccions {
         }
         return false;
     }
+
     public Accio[] obtenirDemostracionsValides() {
-        int comptador = 0;
-        for (int i = 0; i < tamany; i++) {
-            if (accions[i].esDemostracioValida()) {
-                comptador++;
+        Accio[] demostracionsValides=new Accio[accions.length];
+        int j=0;
+        for(int i=0;i<accions.length;i++){
+            Accio accio = accions[i];
+            if (accio instanceof Demostracio) {
+                Demostracio demostracio = (Demostracio) accio;
+                if (demostracio.esValida()) { 
+                    demostracionsValides[j]=accio;
+                    j++;
+                }
             }
         }
-        Accio[] resultats = new Accio[comptador];
-        int index = 0;
-        for (int i = 0; i < tamany; i++) {
-            if (accions[i].esDemostracioValida()) {
-                resultats[index++] = accions[i];
-            }
-        }
-        return resultats;
+        return demostracionsValides;
     }
 
     public Accio[] obtenirXerradesEntreDates(LocalDate inici, LocalDate fi) {
         int comptador = 0;
         for (int i = 0; i < tamany; i++) {
-            if (accions[i].esXerrada() && accions[i].getData().isAfter(inici.minusDays(1)) && accions[i].getData().isBefore(fi.plusDays(1))) {
-                comptador++;
+            if (accions[i] instanceof Xerrada) {
+                Xerrada xerrada = (Xerrada) accions[i];
+                if (xerrada.obtenirDataRealitzacio().isAfter(inici.minusDays(1)) && 
+                    xerrada.obtenirDataRealitzacio().isBefore(fi.plusDays(1))) {
+                    comptador++;
+                }
             }
         }
+    
         Accio[] resultats = new Accio[comptador];
         int index = 0;
         for (int i = 0; i < tamany; i++) {
-            if (accions[i].esXerrada() && accions[i].getData().isAfter(inici.minusDays(1)) && accions[i].getData().isBefore(fi.plusDays(1))) {
-                resultats[index++] = accions[i];
+            if (accions[i] instanceof Xerrada) {
+                Xerrada xerrada = (Xerrada) accions[i];
+                if (xerrada.obtenirDataRealitzacio().isAfter(inici.minusDays(1)) && 
+                    xerrada.obtenirDataRealitzacio().isBefore(fi.plusDays(1))) {
+                        resultats[index++] = accions[i];
+                }
             }
         }
         return resultats;
-    }      
-    public String obtenirInformacio(){
-        public String obtenirInformacio() {
-            String resultat = ""; 
-            for (int i = 0; i < tamany; i++) {
-                resultat = resultat + accions[i].toString() + "\n";            }
-            return resultat;
+    }
+
+    public String obtenirInformacio() {
+        String resultat = ""; 
+        for (int i = 0; i < tamany; i++) {
+            resultat = resultat + accions[i].toString() + "\n";            
         }
-        
+        return resultat;
     }
 
 

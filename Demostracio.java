@@ -1,14 +1,14 @@
 import java.time.LocalDate;
 
 public class Demostracio extends Accio {
-    private LocalDate dataDisseny;
+    private LocalDate[] dataDisseny=new LocalDate[3];
     private boolean esValida;
     private int nombreVegadesOfertes;
     private double costMaterials;
 
     //Constructor//
-    public Demostracio(LocalDate dataDisseny, boolean esValida, int nombreVegadesOfertes, double costMaterials){
-        super(codi, titol, associacionsOrganitzadores, responsable);
+    public Demostracio(String codi, String titol,Associacio[] associacionsOrganitzadores, Membre responsable, String tipus, LocalDate[] dataDisseny, boolean esValida, int nombreVegadesOfertes, double costMaterials){
+        super(codi, titol, associacionsOrganitzadores, responsable, tipus);
         this.dataDisseny = dataDisseny;
         this.esValida = esValida;
         this.nombreVegadesOfertes = nombreVegadesOfertes;
@@ -19,8 +19,12 @@ public class Demostracio extends Accio {
         esValida = false;    
     }
 
+    public boolean esValida(){
+        return esValida;
+    }
+
     public void incerementarNombreVegadesOfertes(){
-        nombreVegadesOfertes++;
+        nombreVegadesOfertes = nombreVegadesOfertes+1;
     }
 
     public double obtenirCostTotal(){

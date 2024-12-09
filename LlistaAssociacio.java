@@ -1,23 +1,32 @@
-public class LlistaAssocicacio {
+public class LlistaAssociacio {
     private Associacio[] associacions;
     private int capacitat;
     private int tamany;
 
     //Constructor
-    public LlistaAssocicacio(int capacitat){
+    public LlistaAssociacio (int capacitat){
         this.associacions = new Associacio[capacitat];
         this.capacitat= capacitat;
         this.tamany=0;
     }
 
+    public int getTamany(){
+        return tamany;
+    }
+
+    public Associacio[] getAssociacions(){
+        return associacions;
+    }
+
     public void afegirAssociacio(Associacio associacio){
         if(capacitat==tamany){
             capacitat=capacitat*2;
-            Associacio[] newAssociacions=LlistaAssocicacio(capacitat);
+            Associacio[] newAssociacions= new Associacio[capacitat];
+            System.arraycopy(associacions, 0, newAssociacions, 0, tamany);
             associacions = newAssociacions;
         }
         int posicio=0;
-        while (posicio < tamany && associacions[posicio].getNom().compareTo.(associacio.getNom())<0){
+        while (posicio < tamany && associacions[posicio].getNom().compareTo(associacio.getNom())<0){
             posicio++;
         }
         for (int i = tamany; i > posicio; i--) {
@@ -49,14 +58,13 @@ public class LlistaAssocicacio {
         int i = 0;
         while(!trobat && i < tamany){
             if(associacions[i].getNom().equalsIgnoreCase(nom)){
-                Associacio associacio = associacions[i];
-                trobat = true;
+                return associacions[i];
             }
             else{
-                i++
+                i++;
             }
         }
-        return associacio;
+        return null;
     }
 
     public Associacio[] obtenirAssociacionsAmbTitulacions(String titulacio){
@@ -85,7 +93,13 @@ public class LlistaAssocicacio {
     }
 
     public String obtenirInformacio(){
-        String stringAssociacions = String.join(",\n ", associacions);
-        System.out.println("Aquesta es la llista d'associacions:\n"+ stringAssociacions);
+        String[] associacionsString = new String[tamany];
+        for(int i=0; i<tamany;i++){
+            associacionsString[i]=associacions[i].getNom();
+        }
+        String stringAssociacions = String.join("\n", associacionsString);
+        stringAssociacions = String.join("Aquesta es la llista d'associacions:\n ", stringAssociacions);
+        return stringAssociacions;
     }
+
 }
