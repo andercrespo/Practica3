@@ -33,7 +33,7 @@ public class Membre {
     }
 
     //setters
-    public void donarAlta(LocalDate data, String associacio/nomAssociacio) {//////////
+    public void donarAlta(LocalDate data, String nomAssociacio, LlistaAssociacio llistaAssociacio) {//////////
         for (int i = 0; i < dataAlta.length; i++) {
             if (dataAlta[i] == null) {
                 dataAlta[i] = data;
