@@ -8,7 +8,8 @@ public class Alumne extends Membre {
     
     // Constructor 
     public Alumne(String alies, String correu, LocalDate dataAlta, String ensenyament, int anysETSE, boolean graduat){
-        super(alies, correu, dataAlta);
+        
+        super(alies, correu, new LocalDate[] { dataAlta, null, null });
         this.ensenyament = ensenyament;
         this.anysETSE = anysETSE;
         this.graduat = graduat;
@@ -36,4 +37,5 @@ public class Alumne extends Membre {
     }
 
 }
+
 
