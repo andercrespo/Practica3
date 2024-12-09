@@ -2,7 +2,7 @@ import java.time.LocalDate;
 
 public class Membre {
 
-    private String alies;
+    private String alies hola ;
     private String correu;
     private LocalDate[] dataAlta, dataBaixa = new LocalDate[3];
     private LlistaAssociacions associacions;
