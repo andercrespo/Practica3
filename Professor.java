@@ -24,9 +24,10 @@ public class Professor {
         
     }
 
-    public String toString(){
-        return "Professor:" + Membre.getAlies() + ", correu:" + Membre.getCorreu() + ", departament:" + departament
+    public String toString(Membre membre){
+        return "Professor:" + membre.getAlies() + ", correu:" + membre.getCorreu() + ", departament:" + departament
 				+ "despatx:" + despatx;
     }
 
 }
+
