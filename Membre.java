@@ -5,7 +5,7 @@ public class Membre {
     private String alies;
     private String correu;
     private LocalDate[] dataAlta, dataBaixa = new LocalDate[3];
-    private LlistaAssociacions associacions;
+    private LlistaAssociacio associacions;
     private String[] nomAssociacio;/////////////
 
 
@@ -16,19 +16,19 @@ public class Membre {
     }
 
     //getters
-    public static String getAlies(){
+    public String getAlies(){
         return alies;
     }
 
-    public static String getCorreu(){
+    public String getCorreu(){
         return correu;
     }
 
-    public LocalDate getDataAlta(){
+    public LocalDate[] getDataAlta(){
         return dataAlta;
     }
 
-    public LocalDate getDataBaixa(){
+    public LocalDate[] getDataBaixa(){
         return dataBaixa;
     }
 
@@ -41,7 +41,6 @@ public class Membre {
             }
         }
     }
-    //hem de mirar lo de afegirlo a una associacio -< puc utilitzar la funcio afegir membre pero a quina associacio l'afegira?
 
     public void donarBaixa(LocalDate[] data){
         dataBaixa=data;
