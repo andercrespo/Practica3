@@ -24,6 +24,27 @@ public class GestorFitxers {
             System.err.println("Error al processar dades numèriques: " + e.getMessage());
         }
     }
+    public static void guardarFitxerText(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomFitxer))) {
+            if ("membres.txt".equals(nomFitxer)) {
+                for (Membre membre : llistaMembres.getMembres()) {
+                    writer.write(membre.toString());
+                    writer.newLine();
+                }
+            } else if ("accions.txt".equals(nomFitxer)) {
+                for (Accio accio : llistaAccions.getAccions()) {
+                    writer.write(accio.toString());
+                    writer.newLine();
+                }
+            } else {
+                System.out.println("El nom del fitxer no és vàlid.");
+            }
+        } catch (IOException e) {
+            System.err.println("Error escrivint al fitxer: " + e.getMessage());
+        }
+    }
+}
+
 
     private void processarMembre(String[] dades, LlistaMembres llistaMembres) {
         String tipus = dades[0];
