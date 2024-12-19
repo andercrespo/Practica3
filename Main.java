@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
@@ -10,7 +11,7 @@ public class Main {
 
         while (opcio != 18) {
             switch (opcio) {
-                case 1:
+                case 1
                     opcio1();
                     break;
                 case 2:
@@ -90,10 +91,13 @@ public class Main {
         System.out.print("\nIndica opció: ");
     }
 
-    public static void opcio1() {
+    public static void opcio1(LlistaAssociacio llista) {
+        System.out.println(llista.obtenirInformacio());
     }
 
-    public static void opcio2() {
+    public static void opcio2(Associacio associacio, boolean incluirAlumnes, boolean incluirProfessors) {
+        LlistaMembres llista = associacio.obtenirMembresFiltrats(incluirProfessors, incluirAlumnes);
+        llista.obtenirInformacio();
     }
 
     public static void opcio3() {
@@ -104,9 +108,6 @@ public class Main {
         System.out.println("Totes les accions disponibles:");
         System.out.println(llista.obtenirInformacio());
     }
-}
-
-    }
 
     public static void opcio5() {
     }
@@ -114,8 +115,8 @@ public class Main {
     public static void opcio6() {
     }
 
-    public static void opcio7() {
-         
+    public static void opcio7(Associacio associacio, LlistaAssociacio llista) {
+        llista.afegirAssociacio(associacio);
     }
 
     public static void opcio8() {
@@ -155,18 +156,20 @@ public class Main {
             System.out.println("Resposta no vàlida. Torna-ho a intentar.");
         }
     }
-    
-    public static void opcio9(Xerrada xerrada, LlistaAccions llista) {
-        llista.afegirAccio(xerrada);        
-    }
 
-    public static void opcio10() {
+    public static void opcio9(Xerrada xerrada, LlistaAccions llista) {
+        llista.afegirAccio(xerrada);  
+    }   
+
+    public static void opcio10(LlistaAccions llista, Demostracio demostracio) {
+        Accio accio = demostracio;
+        llista.afegirAccio(accio);
     }
 
     public static void opcio11() {
         double costTotal = 0;
     
-        Demostracio[] demostracions = Demostracio.obtenirDemostracions(); 
+        Demostracio[] demostracions = Demostracio.obtenirDemostracions();
     
         System.out.println("Demostracions no actives:");
     
@@ -237,21 +240,46 @@ public class Main {
         System.out.println("Valoració afegida correctament!");
     }
 
-    public static void opcio15() {
-    }
-
-    public static void opcio16(Membre cercat, Xerrada[] xerrades) {
-    for (Xerrada xerrada : xerrades) {
-        for (Membre impartidor : xerrada.impartidors) {
-            if (impartidor.equals(cercat)) {
-                System.out.println("Xerrada: " + xerrada.obtenirInformacioDetallada());
-                break;
+    public static String opcio15(LlistaAccions llista) {
+        Accio[] accions=llista.getAccions();
+        double maxValoracio = 0;
+        String mesValorada=null;
+        int numValoracions=0;
+        for(int i=0;i<accions.length;i++){
+                Xerrada xerrada = (Xerrada) accions[i];
+            if(xerrada.obtenirMitjanaValoracions()>=maxValoracio){
+                if(xerrada.obtenirMitjanaValoracions()==maxValoracio){
+                    if(xerrada.getNumValoracions()>numValoracions){
+                        maxValoracio=xerrada.obtenirMitjanaValoracions();
+                        mesValorada=accions[i].obtenirCodi();
+                        numValoracions=xerrada.getNumValoracions();
+                    }
+                }
+                else{
+                    maxValoracio=xerrada.obtenirMitjanaValoracions();
+                    mesValorada=accions[i].obtenirCodi();
+                    numValoracions=xerrada.getNumValoracions();
+                }
             }
         }
+        return mesValorada;
     }
-}
 
+    public static void opcio16() {
+    }
 
-    public static void opcio17() {
+    public static void opcio17(LlistaAccions llista, LocalDate data) {
+        Accio[] accions=llista.getAccions();
+        for(int i=0;i<accions.length;i++){
+            if(accions[i].esDemostracio()){
+                Demostracio demostracio = (Demostracio) accions[i];
+                if(){//ns a que se referix mirar si una demostracio es activa
+                    demostracio.marcarComNoValida();
+                }
+                if(demostracio.getData().isBefore(data)){
+                    demostracio.marcarComNoValida();
+                }
+            }
+        }
     }
 }
