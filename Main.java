@@ -117,6 +117,41 @@ public class Main {
     }
 
     public static void opcio8() {
+        System.out.println("És el membre nou? (si/no): ");
+        String resposta = teclat.nextLine().trim().toLowerCase();
+
+        if (resposta.equals("si")) {
+            // Cas membre nou
+            System.out.println("Introdueix l'àlies del membre: ");
+            String alies = teclat.nextLine();
+
+            System.out.println("Introdueix el correu electrònic del membre: ");
+            String correu = teclat.nextLine();
+
+            System.out.println("Introdueix el tipus de membre (Professor/Alumne): ");
+            String tipus = teclat.nextLine();
+
+            LocalDate[] dataAlta = { LocalDate.now(), null, null }; // S'afegeix la data actual com a data d'alta
+
+            Membre nouMembre = new Membre(alies, correu, dataAlta, null, new LlistaAssociacio(10), tipus);
+            associacio.afegirMembre(nouMembre);
+            System.out.println("Membre nou afegit amb èxit a l'associació.");
+
+        } else if (resposta.equals("no")) {
+            // Cas membre ja existent en una altra associació
+            System.out.println("Introdueix l'àlies del membre existent: ");
+            String alies = teclat.nextLine();
+
+            System.out.println("Introdueix el correu electrònic del membre: ");
+            String correu = teclat.nextLine();
+
+            Membre membreExistent = new Membre(alies, correu, null, null, new LlistaAssociacio(10), "");
+            associacio.afegirMembre(membreExistent);
+            System.out.println("Relació amb el membre existent afegida amb èxit.");
+
+        } else {
+            System.out.println("Resposta no vàlida. Torna-ho a intentar.");
+        }
     }
 
     public static void opcio9() {
@@ -126,15 +161,77 @@ public class Main {
     }
 
     public static void opcio11() {
+        double costTotal = 0;
+    
+        Demostracio[] demostracions = Demostracio.obtenirDemostracions(); 
+    
+        System.out.println("Demostracions no actives:");
+    
+        for (Demostracio demostracio : demostracions) {
+            // Comprovar si la demostració no és vàlida
+            if (!demostracio.esValida()) {
+                // Mostrar la informació de la demostració no activa
+                System.out.println(demostracio.obternirInformacioDetallada());
+                // Afegir el cost de materials al total
+                costTotal += demostracio.obtenirCostTotal();
+            }
+        }
+    
+        // Mostrar el cost total
+        System.out.println("\nCost econòmic total de les demostracions no actives: " + costTotal);
     }
 
     public static void opcio12() {
     }
 
     public static void opcio13() {
+        System.out.println("Indica el nombre d'assistents:");
+        int nAssistents = Integer.parseInt(teclat.nextLine());
+
+        Xerrada[] xerrades = Xerrada.obtenirXerrades();
+        System.out.println("Xerrades amb més de " + nAssistents + " assistents:");
+
+        for (Xerrada xerrada : xerrades) {
+            if (xerrada != null && xerrada.obtenirNombreAssistents() > nAssistents) {
+                System.out.println(xerrada.obtenirInformacioDetallada());
+            }
+        }
+
     }
 
     public static void opcio14() {
+        Xerrada[] xerrades = Xerrada.obtenirXerrades();
+        if (xerrades == null || xerrades.length == 0) {
+            System.out.println("No hi ha xerrades disponibles per valorar.");
+            return;
+        }
+    
+        System.out.println("Selecciona la xerrada que vols valorar:");
+        for (int i = 0; i < xerrades.length; i++) {
+            if (xerrades[i] != null) {
+                System.out.println((i + 1) + ". " + xerrades[i].obtenirInformacioDetallada());
+            }
+        }
+    
+        System.out.print("Número de la xerrada: ");
+        int indexXerrada = Integer.parseInt(teclat.nextLine()) - 1;
+    
+        if (indexXerrada < 0 || indexXerrada >= xerrades.length || xerrades[indexXerrada] == null) {
+            System.out.println("Xerrada seleccionada no vàlida.");
+            return;
+        }
+    
+        System.out.print("Quina seria la seva valoració de la xerrada (0-10)?: ");
+        int valoracio = Integer.parseInt(teclat.nextLine());
+    
+        if (valoracio < 0 || valoracio > 10) {
+            System.out.println("La valoració ha de ser entre 0 i 10.");
+            return;
+        }
+    
+        xerrades[indexXerrada].afegirValoracio(valoracio);
+    
+        System.out.println("Valoració afegida correctament!");
     }
 
     public static void opcio15() {
