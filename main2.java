@@ -3,11 +3,7 @@ import java.util.Scanner;
 
 public class main2 {
     
-    public void mostrarMembres(Scanner scanner, LlistaAssociacio associacio){
-        System.out.println("Filtre: 1. Professors 2. Alumnes 3. Ambdós");
-        int filtre = scanner.nextInt();
-        scanner.nextLine();
-
+    public void mostrarMembres(filtre, LlistaAssociacio associacio){
         for (Membre membre : llistaMembres.getMembres()){
             if (membre.getAssociacions().getNom() == associacio) {
                 if (filtre == 3 || (filtre == 1 && membre instanceof Professor) || (filtre == 2 && (membre instanceof Alumne))){
@@ -17,11 +13,7 @@ public class main2 {
         }
     }
 
-    public static void mostrarMembresActius(Scanner scanner){
-        System.out.println("Filtre: 1. Professors 2. Alumnes 3. Ambdós");
-        int filtre = scanner.nextInt();
-        scanner.nextLine();
-
+    public static void mostrarMembresActius(filtre){
         for (Membre membre : llistaMembres.obtenirMembresActius()){
             if (filtre == 3 || (filtre == 1 && membre instanceof Professor) || (filtre == 2 && (membre instanceof Alumne))){
                 System.out.println(membre.getAlies(), membre.getCorreu(), membre.getDataAlta(), membre.getDataBaixa());
@@ -30,7 +22,6 @@ public class main2 {
     }
 
     public void mostrarAccionsAssociacio(LlistaAssociacio associacio){
-
         for (Membre membre : llistaMembres.getMembres()){
                 if (membre.getAssociacions().getNom() == associacio){
                     System.out.println("Accions disponibles: " + membre.getAssociacions().getAccions());
@@ -46,7 +37,7 @@ public class main2 {
                     if (accio instanceof Xerrada) {
                         Xerrada xerrada = (Xerrada) accio;
                         if (xerrada.obtenirDataRealitzacio().isAfter(dataInicial.minusDays(1)) && xerrada.obtenirDataRealitzacio().isBefore(dataFinal.plusDays(1))){
-                            System.out.println("-"+xerrada.getTitol() + " el " + xerrada.obtenirDataRealitzacio());
+                            System.out.println("-" + xerrada.getTitol() + " el " + xerrada.obtenirDataRealitzacio());
                         }
                     }
                 }
