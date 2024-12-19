@@ -98,7 +98,13 @@ public class Main {
     public static void opcio3() {
     }
 
-    public static void opcio4() {
+    public static void opcio4(String[] args) {
+        LlistaAccions llista = new LlistaAccions(10);
+        System.out.println("Totes les accions disponibles:");
+        System.out.println(llista.obtenirInformacio());
+    }
+}
+
     }
 
     public static void opcio5() {
