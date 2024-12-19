@@ -114,8 +114,8 @@ public class Main {
     public static void opcio6() {
     }
 
-    public static void opcio7(Xerrada xerrada, LlistaAccions llista) {
-        llista.afegirAccio(xerrada);        
+    public static void opcio7() {
+         
     }
 
     public static void opcio8() {
@@ -155,8 +155,9 @@ public class Main {
             System.out.println("Resposta no vàlida. Torna-ho a intentar.");
         }
     }
-
-    public static void opcio9() {
+    
+    public static void opcio9(Xerrada xerrada, LlistaAccions llista) {
+        llista.afegirAccio(xerrada);        
     }
 
     public static void opcio10() {
