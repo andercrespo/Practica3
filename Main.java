@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Main {
 
     private static Scanner teclat = new Scanner(System.in);
+    private static Associacio associacio = new Associacio();
     public static void main(String[] args) {
         mostraMenu();
         int opcio = Integer.parseInt(teclat.nextLine());
