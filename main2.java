@@ -29,26 +29,17 @@ public class main2 {
         }
     }
 
-    public void mostrarAccionsAssociacio(Scanner scanner){
-        System.out.print("Introdueix el nom de l'associació: ");
-        String nomAssociacio = scanner.nextLine();
+    public void mostrarAccionsAssociacio(LlistaAssociacio associacio){
 
         for (Membre membre : llistaMembres.getMembres()){
-                if (membre.getAssociacions().getNom() == nomAssociacio){
+                if (membre.getAssociacions().getNom() == associacio){
                     System.out.println("Accions disponibles: " + membre.getAssociacions().getAccions());
                     return;
                 }
         }
-
-        System.out.println("Associació no trobada.");
     }
 
-    private static void mostrarXerradesPerFranja(Scanner scanner){
-        System.out.print("Introdueix la data inicial: ");
-        LocalDate dataInicial = LocalDate.parse(scanner.nextLine());
-        System.out.print("Introdueix la data final: ");
-        LocalDate dataFinal = LocalDate.parse(scanner.nextLine());
-
+    private static void mostrarXerradesPerFranja(LocalDate dataInicial, LocalDate dataFinal){
         System.out.println("Xerrades dins la franja de dates:");
         for (Membre membre : llistaMembres.getMembres()){
                 for (Accio accio : membre.getAssociacions().getAccions()){
