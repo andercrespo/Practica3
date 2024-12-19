@@ -265,8 +265,17 @@ public class Main {
         return mesValorada;
     }
 
-    public static void opcio16() {
-    }
+    public static void opcio16(Membre cercat, Xerrada[] xerrades) {
+            for (Xerrada xerrada : xerrades) {
+                for (Membre impartidor : xerrada.impartidors) {
+                    if (impartidor.equals(cercat)) {
+                        System.out.println("Xerrada: " + xerrada.obtenirInformacioDetallada());
+                        break; 
+                    }
+                }
+            }
+        }
+
 
     public static void opcio17(LlistaAccions llista, LocalDate data) {
         Accio[] accions=llista.getAccions();
