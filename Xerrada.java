@@ -54,6 +54,16 @@ public class Xerrada extends Accio {
         return numValoracions;
     }
 
+    public int obtenirNombreAssistents() {
+        return nombreAssistents;
+    }
+
+    public static Xerrada[] obtenirXerrades() {
+        int nXerrades = 0;
+        Xerrada[] xerrades = new Xerrada[nXerrades];
+        return xerrades;
+    }
+
     public String obtenirInformacioDetallada() {
         String info = "El nombre d'impartidors és " + numImpartidors + ", " +
                       "el nombre d'assistents és " + nombreAssistents + " i " +
