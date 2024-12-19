@@ -114,7 +114,8 @@ public class Main {
     public static void opcio6() {
     }
 
-    public static void opcio7() {
+    public static void opcio7(Xerrada xerrada, LlistaAccions llista) {
+        llista.afegirAccio(xerrada);        
     }
 
     public static void opcio8() {
