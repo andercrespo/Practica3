@@ -1,7 +1,6 @@
 import java.time.LocalDate;
 
-public class Xerrada {
-    private Accio heretats;
+public class Xerrada extends Accio {
     private LocalDate dataRealitzacio;
     private int nombreAssistents;
     private int[] valoracions;
@@ -10,19 +9,41 @@ public class Xerrada {
     private int numImpartidors;
     private int numValoracions;
 
-    public Xerrada(Accio heretats, LocalDate dataRealitzacio, int nombreAssistents, int[] valoracions, Membre[] impartidors) {
-        this.heretats = heretats;
+    public Xerrada(String codi, String titol,Associacio[] associacionsOrganitzadores, Membre responsable, String tipus, LocalDate dataRealitzacio, int nombreAssistents, int[] valoracions, Membre[] impartidors) {
+        super(codi, titol, associacionsOrganitzadores, responsable, tipus);
         this.dataRealitzacio = dataRealitzacio;
         this.nombreAssistents = nombreAssistents;
         this.valoracions = valoracions;
         this.impartidors = impartidors;
-        this.numImpartidors = 0;
-        this.numValoracions = 0;
+        this.numImpartidors = impartidors.length;
+        this.numValoracions = valoracions.length;
+    }
+
+    public LocalDate obtenirDataRealitzacio() {
+        return dataRealitzacio;
+    }
+
+    public int getNumValoracions(){
+        return numValoracions;
+    }
+
+    public Membre[] getImpartidors(){
+        return impartidors;
+    }
+
+    public static Xerrada[] obtenirXerrades() {
+        int nXerrades = 0;
+        Xerrada[] xerrades = new Xerrada[nXerrades];
+        return xerrades;
+    }
+
+    public int obtenirNombreAssistents() {
+        return nombreAssistents;
     }
 
     public void afegirImpartidor(Membre impartidor) {
         if (numImpartidors < 3) {
-            impartidors[numImpartidors++] = impartidor;
+            impartidors[numImpartidors+1] = impartidor;
         } else {
             System.out.println("No es poden afegir més impartidors, ja n'hi ha 3.");
         }

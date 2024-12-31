@@ -4,15 +4,18 @@ public class Membre {
 
     private String alies;
     private String correu;
-    private LocalDate[] dataAlta, dataBaixa = new LocalDate[3];
+    private LocalDate[] dataAlta, dataBaixa= new LocalDate[3];
     private LlistaAssociacio associacions;
-    private String[] nomAssociacio;/////////////
+    private String tipus;//Pot ser professor o alumne//
 
 
-    public Membre(String alies, String correu, LocalDate[] dataAlta){
+    public Membre(String alies, String correu, LocalDate[] dataAlta, LocalDate[] dataBaixa, LlistaAssociacio associacions, String tipus){
         this.alies = alies;
         this.correu = correu;
         this.dataAlta = dataAlta;
+        this.dataBaixa = dataBaixa;
+        this.associacions=associacions;
+        this.tipus=tipus;
     }
 
     //getters
@@ -32,18 +35,28 @@ public class Membre {
         return dataBaixa;
     }
 
+    public boolean esProfessor() {
+        return "Professor".equalsIgnoreCase(tipus);
+    }
+
+    public boolean esAlumne() {
+        return "Alumne".equalsIgnoreCase(tipus);
+    }
+
     //setters
-    public void donarAlta(LocalDate data, String nomAssociacio, LlistaAssociacio llistaAssociacio) {//////////
-        for (int i = 0; i < dataAlta.length; i++) {
-            if (dataAlta[i] == null) {
-                dataAlta[i] = data;
-                associacio.afegirMembre(this);
+    public void donarAlta(LocalDate data, String nomAssociacio, LlistaAssociacio llistaAssociacio) {
+        Associacio[] associacions=llistaAssociacio.getAssociacions();
+        dataAlta[dataAlta.length]=data;
+        for (int i = 0; i < llistaAssociacio.getTamany(); i++) {
+            if(associacions[i].getNom().equals(nomAssociacio)){
+                associacions[i].afegirMembre(this);
+                this.associacions.afegirAssociacio(associacions[i]);
             }
         }
     }
 
-    public void donarBaixa(LocalDate[] data){
-        dataBaixa=data;
+    public void donarBaixa(LocalDate data){
+        dataBaixa[dataBaixa.length]=data;
     }
 
     public boolean esActiu(){
@@ -56,14 +69,9 @@ public class Membre {
         return actiu;   
     }
 
-    //potser ferho miranant getter de tamany de llista associacio
     public boolean potAfegirAssociacio(){
-        boolean esPotAfegir = false;
-        int i= 0;
-        while(dataAlta[i] != null && i<=2){
-            i++;
-        }
-        if(i<2){
+        boolean esPotAfegir=false;
+        if(associacions.getTamany()<=3){
             esPotAfegir = true;
         }
         return esPotAfegir;
@@ -75,7 +83,11 @@ public class Membre {
         }
     }
     
-    public LlistaAssociacions getAssociacions(){
-        return LlistaAssociacions;
+    public LlistaAssociacio getAssociacions(){
+        return associacions;
+    }
+
+    public String obtenirInformacio(){
+        return(alies+", "+correu+", "+dataAlta+", "+dataBaixa+", "+associacions+", "+tipus);
     }
 }

@@ -2,10 +2,22 @@ public class LlistaMembres {
     private Membre[] membres;
     private int tamany, capacitat;
 
-    public LlistaMembres(int capacitat){
+    public LlistaMembres(int capacitat,int tamany){
         this.capacitat = capacitat;
         membres = new Membre[capacitat];
-        tamany = 0;
+        this.tamany=tamany;
+    }
+
+    public Membre[] getMembres(){
+        return membres;
+    }
+
+    public int getTamany(){
+        return tamany;
+    }
+
+    public void aumentaTamany(){
+        tamany++;
     }
 
     public void afegirMembre(Membre membre){
@@ -36,6 +48,7 @@ public class LlistaMembres {
             }
         i++;
         }
+        tamany--;
         return trobat;
     }
 
