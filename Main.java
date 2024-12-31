@@ -300,290 +300,439 @@ public class Main {
     }
 
     public static void opcio1(LlistaAssociacio llista) {
-        System.out.println(llista.obtenirInformacio());
+        try {
+            System.out.println(llista.obtenirInformacio());
+        } catch (Exception e) {
+            System.out.println("Error en opcio1: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
-
+    
     public static void opcio2(Associacio associacio, boolean incluirAlumnes, boolean incluirProfessors) {
-        LlistaMembres llista = associacio.obtenirMembresFiltrats(incluirProfessors, incluirAlumnes);
-        System.out.println(llista.obtenirInformacio());
+        try {
+            LlistaMembres llista = associacio.obtenirMembresFiltrats(incluirProfessors, incluirAlumnes);
+            System.out.println(llista.obtenirInformacio());
+        } catch (Exception e) {
+            System.out.println("Error en opcio2: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
-
+    
     public static void opcio3(Associacio associacio, boolean incluirAlumnes, boolean incluirProfessors) {
-        LlistaMembres llista = associacio.obtenirMembresFiltrats(incluirProfessors, incluirAlumnes);
-        Membre[] llistaActius = llista.obtenirMembresActius();
-        LlistaMembres resultat = new LlistaMembres(llistaActius.length,llistaActius.length);
-        System.out.println(resultat.obtenirInformacio());
+        try {
+            LlistaMembres llista = associacio.obtenirMembresFiltrats(incluirProfessors, incluirAlumnes);
+            Membre[] llistaActius = llista.obtenirMembresActius();
+            LlistaMembres resultat = new LlistaMembres(llistaActius.length, llistaActius.length);
+            System.out.println(resultat.obtenirInformacio());
+        } catch (Exception e) {
+            System.out.println("Error en opcio3: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+    
 
     public static void opcio4(LlistaAccions llista, boolean incluirXerrades, boolean incluirDemostracions) {
-        Accio[] accions=llista.getAccions();
-        LlistaAccions resultat= new LlistaAccions(accions.length);
-        for(int i=0;i<accions.length;i++){
-            if(accions[i].esXerrada() && incluirXerrades){
-                resultat.afegirAccio(accions[i]);
-                break;
-            }
-            if (accions[i].esDemostracio() && incluirDemostracions) {
-                resultat.afegirAccio(accions[i]);
-                break;
-            }
-        }
-        System.out.println(resultat.obtenirInformacio());
-    }
-
-    public static void opcio5(LlistaAccions llista, Associacio associacio) {
-        Accio[] accions=llista.getAccions();
-        LlistaAccions resultat= new LlistaAccions(accions.length);
-        for(int i=0;i<accions.length;i++){
-            Associacio[] associacionsOrganitzadores=accions[i].getAssociacionsOrganitzadores();
-            for(int j=0;j<associacionsOrganitzadores.length;j++){
-                if(associacionsOrganitzadores[i]== associacio){
+        try {
+            Accio[] accions = llista.getAccions();
+            LlistaAccions resultat = new LlistaAccions(accions.length);
+            for (int i = 0; i < accions.length; i++) {
+                if (accions[i].esXerrada() && incluirXerrades) {
                     resultat.afegirAccio(accions[i]);
+                    break;
+                }
+                if (accions[i].esDemostracio() && incluirDemostracions) {
+                    resultat.afegirAccio(accions[i]);
+                    break;
                 }
             }
+            System.out.println(resultat.obtenirInformacio());
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
         }
-        System.out.println(resultat.obtenirInformacio());
     }
+    
+    public static void opcio5(LlistaAccions llista, Associacio associacio) {
+        try {
+            Accio[] accions = llista.getAccions();
+            LlistaAccions resultat = new LlistaAccions(accions.length);
+            for (int i = 0; i < accions.length; i++) {
+                Associacio[] associacionsOrganitzadores = accions[i].getAssociacionsOrganitzadores();
+                for (int j = 0; j < associacionsOrganitzadores.length; j++) {
+                    if (associacionsOrganitzadores[j] == associacio) {
+                        resultat.afegirAccio(accions[i]);
+                    }
+                }
+            }
+            System.out.println(resultat.obtenirInformacio());
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
 
     public static void opcio6(LocalDate dataInicial, LocalDate dataFinal, LlistaAccions llista) {
-        System.out.println("Xerrades dins la franja de dates:");
-        Accio[] accions =  llista.getAccions();
-        LlistaAccions resultat= new LlistaAccions(accions.length);
-        for(int i=0;i<accions.length;i++){
-            if(accions[i].esXerrada()){
-                Xerrada xerrada = (Xerrada) accions[i];
-                if (xerrada.obtenirDataRealitzacio().isBefore(dataFinal) && xerrada.obtenirDataRealitzacio().isAfter(dataInicial)) {
-                    resultat.afegirAccio(xerrada);
+        try {
+            System.out.println("Xerrades dins la franja de dates:");
+            Accio[] accions = llista.getAccions();
+            LlistaAccions resultat = new LlistaAccions(accions.length);
+            for (int i = 0; i < accions.length; i++) {
+                if (accions[i].esXerrada()) {
+                    Xerrada xerrada = (Xerrada) accions[i];
+                    if (xerrada.obtenirDataRealitzacio().isBefore(dataFinal) && xerrada.obtenirDataRealitzacio().isAfter(dataInicial)) {
+                        resultat.afegirAccio(xerrada);
+                    }
                 }
             }
+            System.out.println(resultat.obtenirInformacio());
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
         }
-        System.out.println(resultat.obtenirInformacio());
     }
-
+    
     public static void opcio7(Associacio associacio, LlistaAssociacio llista) {
-        llista.afegirAssociacio(associacio);
-        System.out.println("Associacio afegida amb exit a la llista.");
+        try {
+            llista.afegirAssociacio(associacio);
+            System.out.println("Associacio afegida amb exit a la llista.");
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+    
 
     public static void opcio8(LlistaAssociacio llista, LlistaMembres llista2) {
-        System.out.println("És el membre nou? (si/no): ");
-        String resposta = teclat.nextLine().trim().toLowerCase();
-
-        if (resposta.equals("si")) {
-            // Cas membre nou
-            System.out.println("Introdueix l'àlies del membre: ");
-            String alies = teclat.nextLine();
-
-            System.out.println("Introdueix el correu electrònic del membre: ");
-            String correu = teclat.nextLine();
-
-            System.out.println("Introdueix el tipus de membre (Professor/Alumne): ");
-            String tipus = teclat.nextLine();
-
-            LocalDate[] dataAlta = {LocalDate.now(),null,null}; // S'afegeix la data actual com a data d'alta
-
-            System.out.println("Introdueix l'associacio a la que es vol afegir el membre: ");
-            String associacio = teclat.nextLine();
-
-            Associacio[]associacions =llista.getAssociacions();
-            int i=0;
-            boolean trobada=false;
-            while(!trobada){
-                if(associacio.equalsIgnoreCase(associacions[i].getNom())){
-                    trobada=true;
+        try {
+            System.out.println("És el membre nou? (si/no): ");
+            String resposta = teclat.nextLine().trim().toLowerCase();
+    
+            if (resposta.equals("si")) {
+                // Cas membre nou
+                System.out.println("Introdueix l'àlies del membre: ");
+                String alies = teclat.nextLine();
+    
+                System.out.println("Introdueix el correu electrònic del membre: ");
+                String correu = teclat.nextLine();
+    
+                System.out.println("Introdueix el tipus de membre (Professor/Alumne): ");
+                String tipus = teclat.nextLine();
+    
+                LocalDate[] dataAlta = {LocalDate.now(), null, null}; // S'afegeix la data actual com a data d'alta
+    
+                System.out.println("Introdueix l'associacio a la que es vol afegir el membre: ");
+                String associacio = teclat.nextLine();
+    
+                Associacio[] associacions = llista.getAssociacions();
+                int i = 0;
+                boolean trobada = false;
+                while (!trobada) {
+                    if (associacio.equalsIgnoreCase(associacions[i].getNom())) {
+                        trobada = true;
+                    } else {
+                        i++;
+                    }
                 }
-                else{
-                    i++;
+                LlistaAssociacio associacionsPertany = new LlistaAssociacio(3);
+                associacionsPertany.afegirAssociacio(associacions[i]);
+                Membre nouMembre = new Membre(alies, correu, dataAlta, null, associacionsPertany, tipus);
+                associacions[i].afegirMembre(nouMembre);
+    
+                System.out.println("Membre nou afegit amb èxit a l'associació.");
+    
+            } else if (resposta.equals("no")) {
+                // Cas membre ja existent en una altra associació
+                System.out.println("Introdueix l'àlies del membre existent: ");
+                String alies = teclat.nextLine();
+    
+                Membre[] membres = llista2.getMembres();
+                int i = 0;
+                boolean trobat = false;
+                while (!trobat) {
+                    if (alies.equalsIgnoreCase(membres[i].getAlies())) {
+                        trobat = true;
+                    } else {
+                        i++;
+                    }
                 }
+                System.out.println("Introdueix l'associacio a la que es vol afegir el membre: ");
+                String associacio2 = teclat.nextLine();
+    
+                Associacio[] associacions2 = llista.getAssociacions();
+                int j = 0;
+                boolean trobada = false;
+                while (!trobada) {
+                    if (associacio2.equalsIgnoreCase(associacions2[j].getNom())) {
+                        trobada = true;
+                    } else {
+                        j++;
+                    }
+                }
+                membres[i].afegirAssociacio(associacions2[j]);
+                associacions2[j].afegirMembre(membres[i]);
+                System.out.println("Membre existent afegit amb èxit a l'associació.");
+    
+            } else {
+                System.out.println("Resposta no vàlida. Torna-ho a intentar.");
             }
-            LlistaAssociacio associacionsPertany = new LlistaAssociacio(3);
-            associacionsPertany.afegirAssociacio(associacions[i]);
-            Membre nouMembre = new Membre(alies, correu, dataAlta, null, associacionsPertany, tipus);
-            associacions[i].afegirMembre(nouMembre);
-
-            System.out.println("Membre nou afegit amb èxit a l'associació.");
-
-        } else if (resposta.equals("no")) {
-            // Cas membre ja existent en una altra associació
-            System.out.println("Introdueix l'àlies del membre existent: ");
-            String alies = teclat.nextLine();
-
-            Membre[] membres= llista2.getMembres();
-            int i=0;
-            boolean trobat = false;
-            while (!trobat) {
-                if(alies.equalsIgnoreCase(membres[i].getAlies())){
-                    trobat=true;
-                }
-                else{
-                    i++;
-                }
-            }
-            System.out.println("Introdueix l'associacio a la que es vol afegir el membre: ");
-            String associacio2 = teclat.nextLine();
-
-            Associacio[]associacions2 =llista.getAssociacions();
-            int j=0;
-            boolean trobada=false;
-            while(!trobada){
-                if(associacio2.equalsIgnoreCase(associacions2[j].getNom())){
-                    trobada=true;
-                }
-                else{
-                    j++;
-                }
-            }
-            membres[i].afegirAssociacio(associacions2[j]);
-            associacions2[i].afegirMembre(membres[i]);
-            System.out.println("Membre existent afegit amb èxit a l'associació."); 
-
-        } else {
-            System.out.println("Resposta no vàlida. Torna-ho a intentar.");
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("Error: Accés fora dels límits de la llista.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+    
 
     public static void opcio9(Xerrada xerrada, LlistaAccions llista) {
-        llista.afegirAccio(xerrada);
-        System.out.println("Xerrada afegida amb èxit a la llista.");
-    }   
-
-    public static void opcio10(LlistaAccions llista, Demostracio demostracio) {
-        llista.afegirAccio(demostracio);
-        System.out.println("Demostracio afegida amb èxit a la llista.");
+        try {
+            llista.afegirAccio(xerrada);
+            System.out.println("Xerrada afegida amb èxit a la llista.");
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+    
+    public static void opcio10(LlistaAccions llista, Demostracio demostracio) {
+        try {
+            llista.afegirAccio(demostracio);
+            System.out.println("Demostracio afegida amb èxit a la llista.");
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
 
     public static void opcio11(LlistaAccions llista) {
-        double costTotal = 0;
-        Accio[] accions = llista.getAccions();
-        LlistaAccions resultat= new LlistaAccions(accions.length);
-        System.out.println("Demostracions no actives:");
-        for(int i=0;i<accions.length;i++){
-            if(accions[i].esDemostracio()){
-                Demostracio demostracio = (Demostracio) accions[i];
-                if (!demostracio.esValida()) {
-                    resultat.afegirAccio(accions[i]);
-                    costTotal=costTotal+demostracio.obtenirCostTotal();
+        try {
+            double costTotal = 0;
+            Accio[] accions = llista.getAccions();
+            LlistaAccions resultat = new LlistaAccions(accions.length);
+            System.out.println("Demostracions no actives:");
+            for (int i = 0; i < accions.length; i++) {
+                if (accions[i].esDemostracio()) {
+                    Demostracio demostracio = (Demostracio) accions[i];
+                    if (!demostracio.esValida()) {
+                        resultat.afegirAccio(accions[i]);
+                        costTotal = costTotal + demostracio.obtenirCostTotal();
+                    }
                 }
             }
+            System.out.println("\nCost econòmic total de les demostracions no actives: " + costTotal);
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (ClassCastException e) {
+            System.err.println("Error: No s'ha pogut convertir l'objecte");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
         }
-        System.out.println("\nCost econòmic total de les demostracions no actives: " + costTotal);
     }
+    
 
     public static void opcio12(LlistaMembres llista) {
-        int maxAssociacions = 0;
-        LocalDate maxDataAlta = null;
-        int index=0;
-        Membre[] membres = llista.getMembres();
-        for(int i=0;i<membres.length;i++){
-            LlistaAssociacio associacionsPertany=membres[i].getAssociacions();
-            Associacio[] associacions = associacionsPertany.getAssociacions();
-            if(associacions.length>=maxAssociacions){
-                if(associacions.length==maxAssociacions){
-                    LocalDate[]datesAlta = membres[i].getDataAlta();
-                    for(int j=0;i<datesAlta.length;i++){
-                        if(datesAlta[j].isBefore(maxDataAlta)){
-                            maxDataAlta=datesAlta[j];
-                            index=i;
+        try {
+            int maxAssociacions = 0;
+            LocalDate maxDataAlta = null;
+            int index = 0;
+            Membre[] membres = llista.getMembres();
+            for (int i = 0; i < membres.length; i++) {
+                LlistaAssociacio associacionsPertany = membres[i].getAssociacions();
+                Associacio[] associacions = associacionsPertany.getAssociacions();
+                if (associacions.length >= maxAssociacions) {
+                    if (associacions.length == maxAssociacions) {
+                        LocalDate[] datesAlta = membres[i].getDataAlta();
+                        for (int j = 0; j < datesAlta.length; j++) {
+                            if (datesAlta[j].isBefore(maxDataAlta)) {
+                                maxDataAlta = datesAlta[j];
+                                index = i;
+                            }
                         }
+                    } else {
+                        maxAssociacions = associacions.length;
+                        LocalDate[] datesAlta = membres[i].getDataAlta();
+                        LocalDate mesAntiga = datesAlta[0];
+                        for (int j = 0; j < datesAlta.length; j++) {
+                            if (datesAlta[j].isBefore(mesAntiga)) {
+                                mesAntiga = datesAlta[j];
+                            }
+                        }
+                        maxDataAlta = mesAntiga;
+                        index = i;
                     }
                 }
-                else{
-                    maxAssociacions=associacions.length;
-                    LocalDate[]datesAlta = membres[i].getDataAlta();
-                    LocalDate mesAntiga = datesAlta[0];
-                    for(int j=0;i<datesAlta.length;i++){
-                        if(datesAlta[j].isBefore(mesAntiga)){
-                            mesAntiga=datesAlta[j];
-                        }
-                    }
-                    maxDataAlta=mesAntiga;
-                    index=i;
+            }
+            System.out.println(membres[index].obtenirInformacio());
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("Error: Accés fora dels límits de la llista.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+
+    public static void opcio13(int nAssistents, LlistaAccions llista) {
+        try {
+            Accio[] accions = llista.getAccions();
+            Xerrada[] xerrades = new Xerrada[accions.length];
+            for (int i = 0; i < accions.length; i++) {
+                if (accions[i].esXerrada()) {
+                    xerrades[xerrades.length - 1] = (Xerrada) accions[i];
                 }
             }
-        }
-        System.out.println(membres[index].obtenirInformacio());
-    }
-
-    public static void opcio13(int nAssistents,LlistaAccions llista) {
-        Accio[] accions =llista.getAccions();
-        Xerrada[] xerrades=new Xerrada[accions.length];
-        for(int i=0;i<accions.length;i++){
-            if(accions[i].esXerrada()){
-                xerrades[xerrades.length]= (Xerrada)accions[i];
+            for (Xerrada xerrada : xerrades) {
+                if (xerrada != null && xerrada.obtenirNombreAssistents() > nAssistents) {
+                    System.out.println(xerrada.obtenirInformacioDetallada());
+                }
             }
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (ClassCastException e) {
+            System.err.println("Error: No s'ha pogut convertir l'objecte");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
         }
-        for (Xerrada xerrada : xerrades) {
-            if (xerrada != null && xerrada.obtenirNombreAssistents() > nAssistents) {
-                System.out.println(xerrada.obtenirInformacioDetallada());
-            }
-        }
-
     }
+    
 
     public static void opcio14(LlistaAccions llista) {
-        Accio[] accions =llista.getAccions();
-        Xerrada[] xerrades=new Xerrada[accions.length];
-        for(int i=0;i<accions.length;i++){
-            if(accions[i].esXerrada()){
-                xerrades[xerrades.length]= (Xerrada)accions[i];
+        try {
+            Accio[] accions = llista.getAccions();
+            Xerrada[] xerrades = new Xerrada[accions.length];
+            for (int i = 0; i < accions.length; i++) {
+                if (accions[i].esXerrada()) {
+                    xerrades[xerrades.length - 1] = (Xerrada) accions[i];
+                }
             }
-        }
-        for (int i = 0; i < xerrades.length; i++) {
-            if (xerrades[i] != null) {
-                System.out.println((i + 1) + ". " + xerrades[i].obtenirInformacioDetallada());
+            for (int i = 0; i < xerrades.length; i++) {
+                if (xerrades[i] != null) {
+                    System.out.println((i + 1) + ". " + xerrades[i].obtenirInformacioDetallada());
+                }
             }
+            System.out.print("Digues el número de la xerrada que vols valorar: ");
+            int indexXerrada = Integer.parseInt(teclat.nextLine()) - 1;
+            if (indexXerrada < 0 || indexXerrada >= xerrades.length || xerrades[indexXerrada] == null) {
+                System.out.println("Xerrada seleccionada no vàlida.");
+                return;
+            }
+            System.out.print("Quina valoració li dones a la xerrada?(1-10): ");
+            int valoracio = Integer.parseInt(teclat.nextLine());
+            xerrades[indexXerrada].afegirValoracio(valoracio);
+            System.out.println("Valoració afegida correctament!");
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (ClassCastException e) {
+            System.err.println("Error: No s'ha pogut convertir l'objecte");
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            System.err.println("Error: Entrada invàlida al convertir a número.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
         }
-        System.out.print("Digues el número de la xerrada que vols valorar: ");
-        int indexXerrada = Integer.parseInt(teclat.nextLine()) - 1;
-        if (indexXerrada < 0 || indexXerrada >= xerrades.length || xerrades[indexXerrada] == null) {
-            System.out.println("Xerrada seleccionada no vàlida.");
-            return;
-        }
-        System.out.print("Quina valoració li dones a la xerrada?(1-10): ");
-        int valoracio = Integer.parseInt(teclat.nextLine());
-        xerrades[indexXerrada].afegirValoracio(valoracio);
-        System.out.println("Valoració afegida correctament!");
     }
+    
 
     public static String opcio15(LlistaAccions llista) {
-        Accio[] accions=llista.getAccions();
-        double maxValoracio = 0;
-        String mesValorada=null;
-        int numValoracions=0;
-        for(int i=0;i<accions.length;i++){
+        try {
+            Accio[] accions = llista.getAccions();
+            double maxValoracio = 0;
+            String mesValorada = null;
+            int numValoracions = 0;
+            for (int i = 0; i < accions.length; i++) {
                 Xerrada xerrada = (Xerrada) accions[i];
-            if(xerrada.obtenirMitjanaValoracions()>=maxValoracio){
-                if(xerrada.obtenirMitjanaValoracions()==maxValoracio){
-                    if(xerrada.getNumValoracions()>numValoracions){
-                        maxValoracio=xerrada.obtenirMitjanaValoracions();
-                        mesValorada=accions[i].obtenirCodi();
-                        numValoracions=xerrada.getNumValoracions();
+                if (xerrada.obtenirMitjanaValoracions() >= maxValoracio) {
+                    if (xerrada.obtenirMitjanaValoracions() == maxValoracio) {
+                        if (xerrada.getNumValoracions() > numValoracions) {
+                            maxValoracio = xerrada.obtenirMitjanaValoracions();
+                            mesValorada = accions[i].obtenirCodi();
+                            numValoracions = xerrada.getNumValoracions();
+                        }
+                    } else {
+                        maxValoracio = xerrada.obtenirMitjanaValoracions();
+                        mesValorada = accions[i].obtenirCodi();
+                        numValoracions = xerrada.getNumValoracions();
                     }
                 }
-                else{
-                    maxValoracio=xerrada.obtenirMitjanaValoracions();
-                    mesValorada=accions[i].obtenirCodi();
-                    numValoracions=xerrada.getNumValoracions();
-                }
             }
+            return mesValorada;
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (ClassCastException e) {
+            System.err.println("Error: No s'ha pogut convertir l'objecte");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
         }
-        return mesValorada;
+        return null;
     }
+    
 
     public static void opcio16(Membre membre, LlistaAccions llista) {
-        Accio[] accions=llista.getAccions();
-        for(int i=0;i<accions.length;i++){
-            if(accions[i].esXerrada()){
-                Xerrada xerrada = (Xerrada) accions[i];
-                Membre[] impartidors = xerrada.getImpartidors();
-                for(int j=0;j<impartidors.length;j++){
-                    if (impartidors[j].equals(membre)){
-                        System.out.println("Xerrada: " + accions[i].obtenirInformacio());
+        try {
+            Accio[] accions = llista.getAccions();
+            for (int i = 0; i < accions.length; i++) {
+                if (accions[i].esXerrada()) {
+                    Xerrada xerrada = (Xerrada) accions[i];
+                    Membre[] impartidors = xerrada.getImpartidors();
+                    for (int j = 0; j < impartidors.length; j++) {
+                        if (impartidors[j].equals(membre)) {
+                            System.out.println("Xerrada: " + accions[i].obtenirInformacio());
+                        }
                     }
                 }
             }
+        } catch (NullPointerException e) {
+            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            e.printStackTrace();
+        } catch (ClassCastException e) {
+            System.err.println("Error: No s'ha pogut convertir l'objecte");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error inesperat: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
     public static void opcio17(LlistaAccions llista, LocalDate data) {//correccio de la opcio17 pa que no pete
         Accio[] accions = llista.getAccions();
         int n = accions.length;
@@ -612,4 +761,3 @@ public class Main {
     }
     
 }
-
