@@ -238,12 +238,14 @@ public class Main {
             Accio[] accions = llistaAccions.getAccions();
             LlistaAccions resultat = new LlistaAccions(accions.length);
             for (int j = 0; j < accions.length; j++) {
+                if(accions[j] != null){
                 Associacio[] associacionsOrganitzadores = accions[j].getAssociacionsOrganitzadores();
+                if (associacionsOrganitzadores != null ){
                 for (int k = 0; k < associacionsOrganitzadores.length; k++) {
                     if (associacionsOrganitzadores[k] == associacio) {
                         resultat.afegirAccio(accions[j]);
                     }
-                }
+                }}}
             }
             System.out.println(resultat.obtenirInformacio());
         } catch (NullPointerException e) {
@@ -270,12 +272,13 @@ public class Main {
             Accio[] accions = llistaAccions.getAccions();
             LlistaAccions resultat = new LlistaAccions(accions.length);
             for (int i = 0; i < accions.length; i++) {
+                if(accions[i] != null){
                 if (accions[i].esXerrada()) {
                     Xerrada xerrada = (Xerrada) accions[i];
                     if (xerrada.obtenirDataRealitzacio().isBefore(dataFin) && xerrada.obtenirDataRealitzacio().isAfter(dataIni)) {
                         resultat.afegirAccio(xerrada);
                     }
-                }
+                }}
             }
             System.out.println(resultat.obtenirInformacio());
         } catch (NullPointerException e) {
@@ -293,6 +296,7 @@ public class Main {
         String nom = teclat.nextLine();
         System.out.println("Introdueix el correu de l'associació: ");
         String correu = teclat.nextLine();
+        
         Associacio associacio = new Associacio(nom, correu, null, null, null, null, null, null);
         //
         try {
@@ -459,13 +463,14 @@ public class Main {
             LlistaAccions resultat = new LlistaAccions(accions.length);
             System.out.println("Demostracions no actives:");
             for (int i = 0; i < accions.length; i++) {
+                if (accions[i]!= null){
                 if (accions[i].esDemostracio()) {
                     Demostracio demostracio = (Demostracio) accions[i];
                     if (!demostracio.esValida()) {
                         resultat.afegirAccio(accions[i]);
                         costTotal = costTotal + demostracio.obtenirCostTotal();
                     }
-                }
+                }}
             }
             System.out.println("\nCost econòmic total de les demostracions no actives: " + costTotal);
         } catch (NullPointerException e) {
@@ -488,30 +493,34 @@ public class Main {
             int index = 0;
             Membre[] membres = llistaMembres.getMembres();
             for (int i = 0; i < membres.length; i++) {
+                if (membres[i] != null){
                 LlistaAssociacio associacionsPertany = membres[i].getAssociacions();
+                if(associacionsPertany != null){
                 Associacio[] associacions = associacionsPertany.getAssociacions();
                 if (associacions.length >= maxAssociacions) {
                     if (associacions.length == maxAssociacions) {
                         LocalDate[] datesAlta = membres[i].getDataAlta();
                         for (int j = 0; j < datesAlta.length; j++) {
+                            if (datesAlta[j] != null){
                             if (datesAlta[j].isBefore(maxDataAlta)) {
                                 maxDataAlta = datesAlta[j];
                                 index = i;
-                            }
+                            }}}
                         }
                     } else {
                         maxAssociacions = associacions.length;
                         LocalDate[] datesAlta = membres[i].getDataAlta();
                         LocalDate mesAntiga = datesAlta[0];
                         for (int j = 0; j < datesAlta.length; j++) {
+                            if (datesAlta[j] != null){
                             if (datesAlta[j].isBefore(mesAntiga)) {
                                 mesAntiga = datesAlta[j];
                             }
-                        }
+                        }}
                         maxDataAlta = mesAntiga;
                         index = i;
                     }
-                }
+                }}
             }
             System.out.println(membres[index].obtenirInformacio());
         } catch (NullPointerException e) {
@@ -536,9 +545,10 @@ public class Main {
             Accio[] accions = llistaAccions.getAccions();
             Xerrada[] xerrades = new Xerrada[accions.length];
             for (int i = 0; i < accions.length; i++) {
+                if (accions[i] != null){
                 if (accions[i].esXerrada()) {
                     xerrades[xerrades.length - 1] = (Xerrada) accions[i];
-                }
+                }}
             }
             for (Xerrada xerrada : xerrades) {
                 if (xerrada != null && xerrada.obtenirNombreAssistents() > nAss) {
@@ -563,9 +573,10 @@ public class Main {
             Accio[] accions = llistaAccions.getAccions();
             Xerrada[] xerrades = new Xerrada[accions.length];
             for (int i = 0; i < accions.length; i++) {
+                if (accions[i] != null){
                 if (accions[i].esXerrada()) {
                     xerrades[xerrades.length - 1] = (Xerrada) accions[i];
-                }
+                }}
             }
             for (int i = 0; i < xerrades.length; i++) {
                 if (xerrades[i] != null) {
