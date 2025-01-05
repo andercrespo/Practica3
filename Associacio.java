@@ -10,6 +10,8 @@ public class Associacio {
     private Alumne secretari;
     private Alumne tresorer;
 
+    private int numTitulacions;
+
     //Constructor//
     public Associacio (String nom,String correuContacte, String[] titulacions, LlistaMembres membres, LlistaMembres membresActius, Alumne president, Alumne secretari, Alumne tresorer){
         this.nom=nom;
@@ -20,6 +22,7 @@ public class Associacio {
         this.president=president;
         this.secretari=secretari;
         this.tresorer=tresorer;
+        this.numTitulacions=titulacions.length;
 
     }
 
@@ -30,6 +33,10 @@ public class Associacio {
 
     public String[] getTitulacions(){
         return titulacions;
+    }
+    
+    public LlistaMembres getMembres(){
+        return membres;
     }
         
     //Gestió de titulacions//
@@ -45,7 +52,12 @@ public class Associacio {
             }
         }
         if(!trobat){
-            titulacions[titulacions.length]=titulacio;
+            if (numTitulacions >= titulacions.length) {
+                String[] nouArray = new String[titulacions.length + 1];
+                System.arraycopy(titulacions, 0, nouArray, 0, titulacions.length);
+                titulacions = nouArray;
+            }
+            titulacions[numTitulacions++] = titulacio;
         }
     }
 
@@ -88,8 +100,8 @@ public class Associacio {
         }
     }
 
-    public void donarDeBaixaMembre(Membre membre, LocalDate dataBaixa){
-        membre.donarBaixa(dataBaixa);
+    public void donarDeBaixaMembre(Membre membre, LocalDate dataBaixa, Associacio associacio){
+        membre.donarBaixa(dataBaixa, associacio);
         membresActius.eliminarMembre(membre.getAlies());
     }
 

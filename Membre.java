@@ -55,8 +55,24 @@ public class Membre {
         }
     }
 
-    public void donarBaixa(LocalDate data){
-        dataBaixa[dataBaixa.length]=data;
+    public void donarBaixa(LocalDate data, Associacio associacio){
+        boolean trobada=false;
+        int index=0;
+        int j=0;
+        Associacio[] associacionsMembre =associacions.getAssociacions();
+        while(!trobada && j<associacionsMembre.length){
+            if(associacio.getNom()==associacionsMembre[j].getNom()){
+                index=j;
+            }
+            else{
+                j++;
+            }
+        }
+        dataBaixa[index]=data;
+    }
+
+    public void setAssociacions(LlistaAssociacio llistaAssociacions){
+        this.associacions=llistaAssociacions;
     }
 
     public boolean esActiu(){
@@ -71,7 +87,7 @@ public class Membre {
 
     public boolean potAfegirAssociacio(){
         boolean esPotAfegir=false;
-        if(associacions.getTamany()<=3){
+        if(associacions.getTamany()<3){
             esPotAfegir = true;
         }
         return esPotAfegir;

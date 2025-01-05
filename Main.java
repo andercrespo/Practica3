@@ -1,64 +1,81 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
     private static Scanner teclat = new Scanner(System.in);
     public static void main(String[] args) {
+        //Crear les llistes vuides i assignem a aquestes el contingut dels fitxers
+        LlistaMembres llistaMembres=new LlistaMembres(100, 0);
+        LlistaAccions llistaAccions=new LlistaAccions(100);
+        LlistaAssociacio llistaAssociacio=new LlistaAssociacio(100);
+        llegirFitxerText("membres.txt",llistaMembres,llistaAccions,llistaAssociacio);
+        llegirFitxerText("accions.txt",llistaMembres,llistaAccions,llistaAssociacio);
+        llegirFitxerText("associacions.txt",llistaMembres,llistaAccions,llistaAssociacio);
+
+        //funcio per a afegir als membres les associacions a les que pertanyen ya que quan els membres s'han creat encara no s'havien creat les associacions
+        llegirFitxerText2("membres.txt", llistaMembres, llistaAccions, llistaAssociacio);
+        //funcio per a afegir a les accions les associacions organitzadores ya que quan les accions s'han creat encara no s'havien creat les associacions
+        llegirFitxerText3("accions.txt", llistaMembres, llistaAccions, llistaAssociacio);
+        //
         mostraMenu();
         int opcio = Integer.parseInt(teclat.nextLine());
 
         while (opcio != 18) {
             switch (opcio) {
                 case 1:
-                    opcio1(LlistaAssociacio);
+                    opcio1(llistaAssociacio);
                     break;
                 case 2:
-                    opcio2(llistaAssociacions);
+                    opcio2(llistaAssociacio);
                     break;
                 case 3:
+                    Associacio associacio = llistaAssociacio.getAssociacions()[0];
                     opcio3(associacio);
                     break;
                 case 4:
                     opcio4(llistaAccions);
                     break;
                 case 5:
-                    opcio5(LlistaAccions,LlistaAssociacio);
+                    opcio5(llistaAccions,llistaAssociacio);
                     break;
                 case 6:
-                    opcio6(LlistaAccions);
+                    opcio6(llistaAccions);
                     break;
                 case 7:
-                    opcio7(LlistaAssociacio);
+                    opcio7(llistaAssociacio);
                     break;
                 case 8:
-                    opcio8(LlistaAssociacio, LlistaMembres);
+                    opcio8(llistaAssociacio, llistaMembres);
                     break;
                 case 9:
-                    opcio9(LlistaAccions);
+                    opcio9(llistaAccions);
                     break;
                 case 10:
-                    opcio10(LlistaAccions);
+                    opcio10(llistaAccions);
                     break;
                 case 11:
-                    opcio11(LlistaAccions);
+                    opcio11(llistaAccions);
                     break;
                 case 12:
-                    opcio12(LlistaMembres);
+                    opcio12(llistaMembres);
                     break;
                 case 13:
-                    opcio13(LlistaAccions);
+                    opcio13(llistaAccions);
                     break;
                 case 14:
-                    opcio14(LlistaAccions);
+                    opcio14(llistaAccions);
                     break;
                 case 15:
-                    opcio15(LlistaAccions);
+                    opcio15(llistaAccions);
                     break;
                 case 16:
-                    opcio16(LlistaAccions,LlistaMembres);
+                    opcio16(llistaAccions,llistaMembres);
                     break;
                 case 17:
-                    opcio17(LlistaAccions);
+                    opcio17(llistaAccions);
             }
             mostraMenu();
             opcio = Integer.parseInt(teclat.nextLine());
@@ -93,7 +110,7 @@ public class Main {
         try {
             System.out.println(llistaAss.obtenirInformacio());
         } catch (Exception e) {
-            System.out.println("Error en obtenir les dades de la llista d'associacions: " + e.getMessage());
+            System.out.println("Error en opció1: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -131,7 +148,7 @@ public class Main {
         try {
             LlistaMembres llista = associacio.obtenirMembresFiltrats(incPro, incAlu);
             System.out.println(llista.obtenirInformacio());
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             System.out.println("Error en opcio2: " + e.getMessage());
             e.printStackTrace();
         }
@@ -692,6 +709,497 @@ public class Main {
                     }
                 }
             }
+        }
+    }
+
+
+    //
+    public static void llegirFitxerText(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions, LlistaAssociacio llistaAssociacio) {
+        try (BufferedReader lector = new BufferedReader(new FileReader(nomFitxer))) {
+            String linia;
+            while ((linia = lector.readLine()) != null) {
+                String[] dades = linia.split(";"); // Separar els atributs per ';'
+
+                // Processar dades segons el fitxer
+                if (nomFitxer.equalsIgnoreCase("membres.txt")) {
+                    processarMembre(dades, llistaMembres);
+                } else if (nomFitxer.equalsIgnoreCase("accions.txt")) {
+                    processarAccio(dades, llistaAccions, llistaMembres);
+                }else if (nomFitxer.equalsIgnoreCase("associacions.txt")) {
+                    processarAssociacio(dades, llistaAssociacio, llistaMembres);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error al llegir el fitxer: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Error al processar dades numèriques: " + e.getMessage());
+        }
+    }
+    public static void processarMembre(String[] dades, LlistaMembres llistaMembres) {
+        String alies = dades[0];
+        String correu = dades[1];
+
+        String[] datesAlta = dades[2].split("/");
+        LocalDate dataAlta1= null;
+        if(!"null".equalsIgnoreCase(datesAlta[0])){
+            dataAlta1 = LocalDate.parse(datesAlta[0]);
+        }
+        LocalDate dataAlta2= null;
+        if(!"null".equalsIgnoreCase(datesAlta[1])){
+            dataAlta2 = LocalDate.parse(datesAlta[1]);
+        }
+        LocalDate dataAlta3= null;
+        if(!"null".equalsIgnoreCase(datesAlta[2])){
+            dataAlta3 = LocalDate.parse(datesAlta[2]);
+        }
+        LocalDate[] dataAlta ={dataAlta1,dataAlta2,dataAlta3};
+
+        String[] datesBaixa = dades[3].split("/");
+        LocalDate dataBaixa1= null;
+        if(!"null".equalsIgnoreCase(datesBaixa[0])){
+            dataBaixa1 = LocalDate.parse(datesBaixa[0]);
+        }
+        LocalDate dataBaixa2= null;
+        if(!"null".equalsIgnoreCase(datesBaixa[1])){
+            dataBaixa2 = LocalDate.parse(datesBaixa[1]);
+        }
+        LocalDate dataBaixa3= null;
+        if(!"null".equalsIgnoreCase(datesBaixa[2])){
+            dataBaixa3 = LocalDate.parse(datesBaixa[2]);
+        }
+        LocalDate[] dataBaixa ={dataBaixa1,dataBaixa2,dataBaixa3};
+
+        LlistaAssociacio associacions = null; // Placeholder
+        String tipus = dades[5];
+
+        if (tipus.equalsIgnoreCase("Alumne")) {
+            String ensenyament = dades[6];
+            int anysETSE = Integer.parseInt(dades[7]);
+            boolean graduat = Boolean.parseBoolean(dades[8]);
+
+            Alumne alumne = new Alumne(alies, correu, dataAlta, dataBaixa, associacions, tipus, ensenyament, anysETSE, graduat);
+            llistaMembres.afegirMembre(alumne);
+        } else if (tipus.equalsIgnoreCase("Professor")) {
+            String departament = dades[6];
+            int despatx = Integer.parseInt(dades[7]);
+
+            Professor professor = new Professor(alies, correu, dataAlta, dataBaixa, associacions, tipus, departament, despatx);
+            llistaMembres.afegirMembre(professor);
+        }
+    }
+
+    public static void processarAccio(String[] dades, LlistaAccions llistaAccions, LlistaMembres llistaMembres) {
+        String codi = dades[0];
+        String titol = dades[1];
+        Associacio[] associacionsOrganitzadores = null;//placeholder
+
+        String nomResponsable = dades[3];
+        Membre[] llistaMembre = llistaMembres.getMembres();
+        int i = 0;
+        boolean trobat = false;
+        Membre responsable = null;
+        while (!trobat && i < llistaMembre.length) {
+            if (llistaMembre[i] != null && nomResponsable.equalsIgnoreCase(llistaMembre[i].getAlies())) {
+                responsable = llistaMembre[i];
+                trobat = true;
+            } else {
+                i++;
+            }
+        }
+        if (!trobat) {
+            System.err.println("Error: No s'ha trobat cap membre amb l'àlies especificat.");
+        }
+
+        String tipus = dades[4];
+
+        if (tipus.equalsIgnoreCase("Xerrada")) {
+            LocalDate dataRealitzacio =null;
+            if(!"null".equalsIgnoreCase(dades[5])){
+                dataRealitzacio = LocalDate.parse(dades[5]);
+            }
+            int nombreAssistents = Integer.parseInt(dades[6]);
+
+            String[] stringValoracions = dades[7].split("/");
+            int[] valoracions= new int[stringValoracions.length];
+            for(int j =0;j<stringValoracions.length;j++){
+                int valj = Integer.parseInt(stringValoracions[j]);
+                valoracions[j]=valj;
+            }
+            
+            String[] stringImpartidors = dades[8].split("/");
+            Membre[] impartidors = new Membre[stringImpartidors.length];
+
+            for (int l = 0; l < stringImpartidors.length; l++) {
+                String nomImpartidorl = stringImpartidors[l];
+                int k = 0;
+                boolean trobat2 = false;
+                while (!trobat2 && k < llistaMembre.length) {
+                    if (llistaMembre[k] != null && nomImpartidorl.equalsIgnoreCase(llistaMembre[k].getAlies())) {
+                        impartidors[l] = llistaMembre[k];
+                        trobat2 = true;
+                    } else {
+                        k++;
+                    }
+                }
+                if (!trobat2) {
+                    System.err.println("Advertència: No s'ha trobat cap membre amb l'àlies: " + nomImpartidorl);
+                }
+            }
+
+            Xerrada xerrada = new Xerrada(codi, titol, associacionsOrganitzadores, responsable, tipus, dataRealitzacio, nombreAssistents, valoracions, impartidors);
+            llistaAccions.afegirAccio(xerrada);
+        }
+        else if (tipus.equalsIgnoreCase("Demostracio")) {
+            LocalDate dataDisseny = LocalDate.parse(dades[5]);
+            boolean esValida = Boolean.parseBoolean(dades[6]);
+            int nombreVegadesOfertes = Integer.parseInt(dades[7]);
+            double costMaterials = Double.parseDouble(dades[8]);
+            
+            Demostracio demostracio = new Demostracio(codi, titol, associacionsOrganitzadores, responsable, tipus, dataDisseny, esValida, nombreVegadesOfertes, costMaterials);
+            
+            llistaAccions.afegirAccio(demostracio);
+        }
+    }
+
+    public static void processarAssociacio(String[] dades, LlistaAssociacio llistaAssociacio, LlistaMembres llistaMembres){
+        String nom = dades [0];
+        String correuContacte = dades[1];
+
+        String[] stringMembres = dades[2].split("/");
+        Membre[] llistaMembre = llistaMembres.getMembres();
+        Membre[] membres = new Membre[stringMembres.length];
+
+        for (int i = 0; i < stringMembres.length; i++) {
+            String nomMembrei = stringMembres[i];
+            int j = 0;
+            boolean trobat = false;
+            while (!trobat && j < llistaMembre.length) {
+                if (llistaMembre[j] != null && nomMembrei.equalsIgnoreCase(llistaMembre[j].getAlies())) {
+                    membres[i] = llistaMembre[j];
+                    trobat = true;
+                } else {
+                    j++;
+                }
+            }
+
+            if (!trobat) {
+                System.err.println("Advertència: No s'ha trobat cap membre amb l'àlies: " + nomMembrei);
+            }
+        }
+
+        String[] stringMembresActius = dades[3].split("/");
+        Membre[] membresActius = new Membre[stringMembresActius.length];
+        for (int i = 0; i < stringMembresActius.length; i++) {
+            String nomMembrei = stringMembresActius[i];
+            int j = 0;
+            boolean trobat = false;
+            while (!trobat && j < llistaMembre.length) {
+                if (llistaMembre[j] != null && nomMembrei.equalsIgnoreCase(llistaMembre[j].getAlies())) {
+                    membresActius[i] = llistaMembre[j];
+                    trobat = true;
+                } else {
+                    j++;
+                }
+            }
+
+            if (!trobat) {
+                System.err.println("Advertència: No s'ha trobat cap membre amb l'àlies: " + nomMembrei);
+            }
+        }
+
+        String[] titulacions = new String[0];
+        int numTitulacions=0;
+        for(int k=0;k<membres.length;k++){
+            if(membres[k].esAlumne()){
+                Alumne membrek = (Alumne) membres[k];
+                String titulaciok= membrek.getEnsenyament();
+                boolean trobat=false;
+                int i=0;
+                while(i<titulacions.length && !trobat){
+                    if(titulaciok==titulacions[i]){
+                        trobat=true;
+                    }
+                    else{
+                    i++;
+                }
+                }
+                if(!trobat){
+                    numTitulacions = titulacions.length;
+                    String[] nouArray = new String[titulacions.length + 1];
+                    System.arraycopy(titulacions, 0, nouArray, 0, titulacions.length);
+                    titulacions = nouArray;
+                }
+                titulacions[numTitulacions] = titulaciok;
+            }
+        }
+
+        String nomPresident = dades[4];
+        int i=0;
+        boolean trobat = false;
+        Alumne president=null;
+        if(llistaMembre[i] != null){
+            while(!trobat && i<llistaMembre.length){
+                if(nomPresident.equalsIgnoreCase(llistaMembre[i].getAlies())){
+                    president = (Alumne) llistaMembre[i];
+                    trobat=true;
+                }
+                else{
+                    i++;
+                }
+            }
+        }
+        
+        String nomSecretari = dades[5];
+        int j=0;
+        boolean trobat2 = false;
+        Alumne secretari = null;
+        if(llistaMembre[j] != null){
+            while(!trobat2 && j<llistaMembre.length){
+                if(nomSecretari.equalsIgnoreCase(llistaMembre[j].getAlies())){
+                    secretari = (Alumne) llistaMembre[j];
+                    trobat2=true;
+                }
+                else{
+                    j++;
+                }
+            }
+        }
+
+        String nomTresorer = dades[6];
+        int l=0;
+        boolean trobat3 = false;
+        Alumne tresorer = null;
+        if(llistaMembre[l] != null){
+            while(!trobat3 && l<llistaMembre.length){
+                if(nomTresorer.equalsIgnoreCase(llistaMembre[l].getAlies())){
+                    tresorer = (Alumne) llistaMembre[l];
+                    trobat3=true;
+                }
+                else{
+                    l++;
+                }
+            }
+        }
+
+        LlistaMembres llistamembres= new LlistaMembres(100, membres.length);
+        llistamembres.setMembres(membres);
+        LlistaMembres llistamembresActius= new LlistaMembres(100, membres.length);
+        llistamembresActius.setMembres(membresActius);
+        
+        Associacio associacio = new Associacio(nom, correuContacte, titulacions, llistamembres, llistamembresActius, president, secretari, tresorer);
+        llistaAssociacio.afegirAssociacio(associacio);
+    }
+    //
+    public static void llegirFitxerText2(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions, LlistaAssociacio llistaAssociacio) {
+        try (BufferedReader lector = new BufferedReader(new FileReader(nomFitxer))) {
+            String linia;
+            while ((linia = lector.readLine()) != null) {
+                String[] dades = linia.split(";"); // Separar els atributs per ';'
+                processarMembre2(dades, llistaMembres,llistaAssociacio);
+            }
+        } catch (IOException e) {
+            System.err.println("Error al llegir el fitxer: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Error al processar dades numèriques: " + e.getMessage());
+        }
+    }
+    
+    public static void processarMembre2(String[] dades, LlistaMembres llistaMembres,LlistaAssociacio llistaAssociacio) {
+        String alies = dades[0];
+        String correu = dades[1];
+
+        String[] datesAlta = dades[2].split("/");
+        LocalDate dataAlta1= null;
+        if(!"null".equalsIgnoreCase(datesAlta[0])){
+            dataAlta1 = LocalDate.parse(datesAlta[0]);
+        }
+        LocalDate dataAlta2= null;
+        if(!"null".equalsIgnoreCase(datesAlta[1])){
+            dataAlta2 = LocalDate.parse(datesAlta[1]);
+        }
+        LocalDate dataAlta3= null;
+        if(!"null".equalsIgnoreCase(datesAlta[2])){
+            dataAlta3 = LocalDate.parse(datesAlta[2]);
+        }
+        LocalDate[] dataAlta ={dataAlta1,dataAlta2,dataAlta3};
+
+        String[] datesBaixa = dades[3].split("/");
+        LocalDate dataBaixa1= null;
+        if(!"null".equalsIgnoreCase(datesBaixa[0])){
+            dataBaixa1 = LocalDate.parse(datesBaixa[0]);
+        }
+        LocalDate dataBaixa2= null;
+        if(!"null".equalsIgnoreCase(datesBaixa[1])){
+            dataBaixa2 = LocalDate.parse(datesBaixa[1]);
+        }
+        LocalDate dataBaixa3= null;
+        if(!"null".equalsIgnoreCase(datesBaixa[2])){
+            dataBaixa3 = LocalDate.parse(datesBaixa[2]);
+        }
+        LocalDate[] dataBaixa ={dataBaixa1,dataBaixa2,dataBaixa3};
+
+        String[] associacionsMembre = dades[4].split("/");
+        Associacio[] llistAssociacions = llistaAssociacio.getAssociacions();
+        Associacio ass1=null;
+        int j =0;
+        boolean trobada=false;
+        while(!trobada && j<llistaAssociacio.getTamany()){
+            if(llistAssociacions[j].getNom().equalsIgnoreCase(associacionsMembre[0])){
+                ass1=llistAssociacions[j];
+                trobada=true;
+            }
+            else{
+                j++;
+            }
+        }
+        Associacio ass2=null;
+        j =0;
+        trobada=false;
+        while(!trobada && j<llistaAssociacio.getTamany()){
+            if(llistAssociacions[j].getNom().equalsIgnoreCase(associacionsMembre[1])){
+                ass2=llistAssociacions[j];
+                trobada=true;
+            }
+            else{
+                j++;
+            }
+        }
+        Associacio ass3=null;
+        j =0;
+        trobada=false;
+        while(!trobada && j<llistaAssociacio.getTamany()){
+            if(llistAssociacions[j].getNom().equalsIgnoreCase(associacionsMembre[2])){
+                ass3=llistAssociacions[j];
+                trobada=true;
+            }
+            else{
+                j++;
+            }
+        }
+        Associacio[] associacions ={ass1,ass2,ass3};
+        LlistaAssociacio llistaAssociacionsMembre= new LlistaAssociacio(3);
+        llistaAssociacionsMembre.setAssociacions(associacions);
+        
+
+        String tipus = dades[5];
+
+        if (tipus.equalsIgnoreCase("Alumne")) {
+            String ensenyament = dades[6];
+            int anysETSE = Integer.parseInt(dades[7]);
+            boolean graduat = Boolean.parseBoolean(dades[8]);
+
+            Alumne alumne = new Alumne(alies, correu, dataAlta, dataBaixa, llistaAssociacionsMembre, tipus, ensenyament, anysETSE, graduat);
+            llistaMembres.afegirMembre(alumne);
+        } else if (tipus.equalsIgnoreCase("Professor")) {
+            String departament = dades[6];
+            int despatx = Integer.parseInt(dades[7]);
+
+            Professor professor = new Professor(alies, correu, dataAlta, dataBaixa, llistaAssociacionsMembre, tipus, departament, despatx);
+            llistaMembres.afegirMembre(professor);
+        }
+    }
+    
+
+    
+    //
+    public static void llegirFitxerText3(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions, LlistaAssociacio llistaAssociacio) {
+        try (BufferedReader lector = new BufferedReader(new FileReader(nomFitxer))) {
+            String linia;
+            while ((linia = lector.readLine()) != null) {
+                String[] dades = linia.split(";"); // Separar els atributs per ';'
+                processarAccio2(dades, llistaAccions,llistaMembres,llistaAssociacio);
+            }
+        } catch (IOException e) {
+            System.err.println("Error al llegir el fitxer: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Error al processar dades numèriques: " + e.getMessage());
+        }
+    }
+    public static void processarAccio2(String[] dades, LlistaAccions llistaAccions, LlistaMembres llistaMembres, LlistaAssociacio llistaAssociacio) {
+        String codi = dades[0];
+        String titol = dades[1];
+
+        Associacio[] associacionsOrganitzadores = new Associacio[llistaAssociacio.getAssociacions().length];
+
+        String[] associacionsOrg = dades[2].split("/");
+        Associacio[] associacions = llistaAssociacio.getAssociacions();
+        int index = 0;
+        
+        for (int j = 0; j < associacionsOrg.length; j++) {
+            for (int i = 0; i < associacions.length; i++) {
+                if (associacions[i] != null && associacions[i].getNom().equalsIgnoreCase(associacionsOrg[j])) {
+                        associacionsOrganitzadores[index] = associacions[i];
+                        index++;
+                }
+            }
+        }
+        
+
+        String nomResponsable = dades[3];
+        Membre[] llistaMembre = llistaMembres.getMembres();
+        int i = 0;
+        boolean trobat = false;
+        Membre responsable = null;
+        while (!trobat && i < llistaMembre.length) {
+            if (llistaMembre[i] != null && nomResponsable.equalsIgnoreCase(llistaMembre[i].getAlies())) {
+                responsable = llistaMembre[i];
+                trobat = true;
+            } else {
+                i++;
+            }
+        }
+        if (!trobat) {
+            System.err.println("Error: No s'ha trobat cap membre amb l'àlies especificat.");
+        }
+
+        String tipus = dades[4];
+
+        if (tipus.equalsIgnoreCase("Xerrada")) {
+            LocalDate dataRealitzacio =null;
+            if(!"null".equalsIgnoreCase(dades[5])){
+                dataRealitzacio = LocalDate.parse(dades[5]);
+            }
+            int nombreAssistents = Integer.parseInt(dades[6]);
+
+            String[] stringValoracions = dades[7].split("/");
+            int[] valoracions= new int[stringValoracions.length];
+            for(int j =0;j<stringValoracions.length;j++){
+                int valj = Integer.parseInt(stringValoracions[j]);
+                valoracions[j]=valj;
+            }
+            
+            String[] stringImpartidors = dades[8].split("/");
+            Membre[] impartidors = new Membre[stringImpartidors.length];
+
+            for (int l = 0; l < stringImpartidors.length; l++) {
+                String nomImpartidorl = stringImpartidors[l];
+                int k = 0;
+                boolean trobat2 = false;
+                while (!trobat2 && k < llistaMembre.length) {
+                    if (llistaMembre[k] != null && nomImpartidorl.equalsIgnoreCase(llistaMembre[k].getAlies())) {
+                        impartidors[l] = llistaMembre[k];
+                        trobat2 = true;
+                    } else {
+                        k++;
+                    }
+                }
+                if (!trobat2) {
+                    System.err.println("Advertència: No s'ha trobat cap membre amb l'àlies: " + nomImpartidorl);
+                }
+            }
+
+            Xerrada xerrada = new Xerrada(codi, titol, associacionsOrganitzadores, responsable, tipus, dataRealitzacio, nombreAssistents, valoracions, impartidors);
+            llistaAccions.afegirAccio(xerrada);
+        }
+        else if (tipus.equalsIgnoreCase("Demostracio")) {
+            LocalDate dataDisseny = LocalDate.parse(dades[5]);
+            boolean esValida = Boolean.parseBoolean(dades[6]);
+            int nombreVegadesOfertes = Integer.parseInt(dades[7]);
+            double costMaterials = Double.parseDouble(dades[8]);
+            
+            Demostracio demostracio = new Demostracio(codi, titol, associacionsOrganitzadores, responsable, tipus, dataDisseny, esValida, nombreVegadesOfertes, costMaterials);
+            
+            llistaAccions.afegirAccio(demostracio);
         }
     }
     

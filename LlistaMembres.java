@@ -20,19 +20,25 @@ public class LlistaMembres {
         tamany++;
     }
 
-    public void afegirMembre(Membre membre){
-        if(tamany == capacitat){
-            capacitat = capacitat*2;
+    public void setMembres(Membre[] membres){
+        this.membres=membres;
+    }
+
+    public void afegirMembre(Membre membre) {
+        if (tamany == capacitat) {
+            capacitat = capacitat * 2;
             Membre[] llistaMembreNova = new Membre[capacitat];
-            for(int i=0; i<tamany; i++){
+            for (int i = 0; i < tamany; i++) {
                 llistaMembreNova[i] = membres[i];
             }
-            llistaMembreNova[tamany + 1] = membre;
-        }else{
-            membres[tamany + 1] = membre;
+            llistaMembreNova[tamany] = membre;
+            membres = llistaMembreNova;
+        } else {
+            membres[tamany] = membre;
         }
-        tamany++;
+        aumentaTamany();
     }
+    
 
  
 
@@ -76,15 +82,14 @@ public class LlistaMembres {
         return llistaMembresActius;
     }
 
-    String obtenirInformacio() {
-        String concatenacio = "";
+    public String obtenirInformacio() {
+        String[] membresString = new String[tamany];
     
         for (int i = 0; i < tamany; i++) {
-            concatenacio += membres[i].getAlies();
-            concatenacio += membres[i].getCorreu();
-            concatenacio += membres[i].getDataAlta();
-            concatenacio += membres[i].getDataBaixa();
-        }   
-        return concatenacio;
+            membresString[i]=(membres[i].getAlies());
+        }
+        String stringMembres = String.join("\n", membresString);
+        stringMembres = String.join("Aquesta es la llista de membres:\n ", stringMembres);   
+        return stringMembres;
     }
 }

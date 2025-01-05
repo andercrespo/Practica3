@@ -54,10 +54,16 @@ public class Xerrada extends Accio {
     }
 
     public void afegirValoracio(int valoracio) {
-        if (valoracio >= 0 && valoracio <= 10 && numValoracions < valoracions.length) {
+        if (valoracio >= 0 && valoracio <= 10) {
+            if (numValoracions >= valoracions.length) {
+                int[] nouValoracions = new int[valoracions.length + 1];
+                System.arraycopy(valoracions, 0, nouValoracions, 0, valoracions.length);
+                valoracions = nouValoracions;
+            }
             valoracions[numValoracions++] = valoracio;
         }
     }
+    
 
     public double obtenirMitjanaValoracions() {
         if (numValoracions == 0) return 0;

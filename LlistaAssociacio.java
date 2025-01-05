@@ -18,6 +18,10 @@ public class LlistaAssociacio {
         return associacions;
     }
 
+    public void setAssociacions(Associacio[] associacions){
+        this.associacions = associacions;
+    }
+
     public void afegirAssociacio(Associacio associacio){
         if(capacitat==tamany){
             capacitat=capacitat*2;

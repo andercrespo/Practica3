@@ -12,6 +12,7 @@ public class Accio {
         this.associacionsOrganitzadores = associacionsOrganitzadores;
         this.responsable = responsable;
         this.tipus=tipus;
+        this.tamany=(associacionsOrganitzadores != null) ? associacionsOrganitzadores.length : 0;
     }
 
     public String obtenirCodi() {
