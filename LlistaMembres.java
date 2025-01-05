@@ -83,13 +83,16 @@ public class LlistaMembres {
     }
 
     public String obtenirInformacio() {
-        String[] membresString = new String[tamany];
+        String[] membresString = new String[membres.length];
     
-        for (int i = 0; i < tamany; i++) {
-            membresString[i]=(membres[i].getAlies());
+        for (int i = 0; i < membres.length; i++) {
+            if (membres[i] != null) {
+                membresString[i] = membres[i].getAlies();
+            }
         }
         String stringMembres = String.join("\n", membresString);
-        stringMembres = String.join("Aquesta es la llista de membres:\n ", stringMembres);   
+        stringMembres ="Aquesta es la llista de membres:\n " + stringMembres;   
         return stringMembres;
     }
+    
 }

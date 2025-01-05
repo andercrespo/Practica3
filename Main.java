@@ -135,8 +135,8 @@ public class Main {
         int i =0;
         boolean trobada = false;
         Associacio associacio = null;
-        while(!trobada && i<llistaAss.length){
-            if(llistaAss[i].getNom().equalsIgnoreCase(nomAss)){
+        while(!trobada && i<llistaAssociacio.getTamany()){
+            if(nomAss.equalsIgnoreCase(llistaAss[i].getNom())){
                  associacio=llistaAss[i];
                  trobada=true;
            }
@@ -170,10 +170,8 @@ public class Main {
         }
         try {
             LlistaMembres llista = associacio.obtenirMembresFiltrats(incPro, incAlu);
-            Membre[] llistaActius = llista.obtenirMembresActius();
-            LlistaMembres resultat = new LlistaMembres(llistaActius.length, llistaActius.length);
-            System.out.println(resultat.obtenirInformacio());
-        } catch (Exception e) {
+            System.out.println(llista.obtenirInformacio());
+        } catch (NullPointerException e) {
             System.out.println("Error en opcio3: " + e.getMessage());
             e.printStackTrace();
         }

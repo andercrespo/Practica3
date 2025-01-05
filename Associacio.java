@@ -111,17 +111,41 @@ public class Associacio {
 
     public LlistaMembres obtenirMembresFiltrats(boolean inclouProfessors,boolean inclouAlumnes){
         LlistaMembres filtrats = new LlistaMembres(membres.getTamany(),0);
-        for (Membre membre : membres.getMembres()) {
-            
+        int noAfegits=0;
+        for (int i=0;i<membres.getTamany();i++) {
+            Membre membre = membres.getMembres()[i];
             boolean esProfessor = membre.esProfessor();
             boolean esAlumne = membre.esAlumne();
+            boolean afegit=false;
 
-            if ((inclouProfessors && esProfessor) || (inclouAlumnes && esAlumne)) {
+            if (inclouProfessors && esProfessor){
                 filtrats.afegirMembre(membre);
-                filtrats.aumentaTamany();
+                afegit=true;
+            }
+            if(!afegit && (inclouAlumnes && esAlumne)){
+                filtrats.afegirMembre(membre);
+                afegit=true;
+            }
+            if(!afegit){
+                noAfegits++;
             }
         }
-        return filtrats;
+        LlistaMembres llistaFiltrats = new LlistaMembres(membres.getTamany()-noAfegits,0);
+        for (int i=0;i<membres.getTamany();i++) {
+            Membre membre = membres.getMembres()[i];
+            boolean esProfessor = membre.esProfessor();
+            boolean esAlumne = membre.esAlumne();
+            boolean afegit=false;
+
+            if (inclouProfessors && esProfessor){
+                llistaFiltrats.afegirMembre(membre);
+                afegit=true;
+            }
+            if(!afegit && (inclouAlumnes && esAlumne)){
+                llistaFiltrats.afegirMembre(membre);
+            }
+        }
+        return llistaFiltrats;
     }
 
 
