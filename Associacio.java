@@ -13,17 +13,16 @@ public class Associacio {
     private int numTitulacions;
 
     //Constructor//
-    public Associacio (String nom,String correuContacte, String[] titulacions, LlistaMembres membres, LlistaMembres membresActius, Alumne president, Alumne secretari, Alumne tresorer){
-        this.nom=nom;
-        this.correuContacte=correuContacte;
-        this.titulacions=titulacions;
-        this.membres=membres;
-        this.membresActius=membresActius;
-        this.president=president;
-        this.secretari=secretari;
-        this.tresorer=tresorer;
-        this.numTitulacions=titulacions.length;
-
+    public Associacio(String nom, String correuContacte, String[] titulacions, LlistaMembres membres, LlistaMembres membresActius, Alumne president, Alumne secretari, Alumne tresorer) {
+        this.nom = nom;
+        this.correuContacte = correuContacte;
+        this.titulacions = (titulacions != null) ? titulacions : new String[0];  // Asegura que no sea null
+        this.membres = membres;
+        this.membresActius = membresActius;
+        this.president = president;
+        this.secretari = secretari;
+        this.tresorer = tresorer;
+        this.numTitulacions = this.titulacions.length;  
     }
 
     //Getters//
