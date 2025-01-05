@@ -1,0 +1,5 @@
+AEEB;aeeb@gmail.com;Unai/Adam/Iker/Oscar/Lazaro/Javier;Unai/Adam/Iker/Oscar/Lazaro;Unai;Adam;Oscar
+AEEI;aeei@gmail.com;Lucia/Clara/David/Maria/Eleonora/Claudia;Lucia/Clara/Maria/Eleonora/Claudia;Claudia;Clara;Lucia
+AEEE;aeee@gmail.com;Ander/Elena/Lazaro/Dan;Dan/Elena/Lazaro;Dan;Elena;Lazaro
+AEEQ;aeeq@gmail.com;Ander/Pablo/Javier/Eleonora/Toni;Eleonora/Toni/Pablo/Javier;Eleonora;Pablo;Toni
+AEESST;aeesst@gmail.com;Efren/Mar/David/Maria;Efren/Mar/David/Maria;Efren;Mar;David

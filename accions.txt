@@ -1,0 +1,2 @@
+EEB100;xerrada1;AEEB/AEESST;Unai;Xerrada;2024-05-10;55;9/10;Unai/Adam/Efren
+EEB101;demostracio2;AEEB;Ander;Demostracio;2023-06-16;true;2;158.4
