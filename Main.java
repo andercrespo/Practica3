@@ -296,12 +296,12 @@ public class Main {
         String nom = teclat.nextLine();
         System.out.println("Introdueix el correu de l'associació: ");
         String correu = teclat.nextLine();
-        
         Associacio associacio = new Associacio(nom, correu, null, null, null, null, null, null);
-        //
+        
         try {
             llistaAssociacions.afegirAssociacio(associacio);
             System.out.println("Associacio afegida amb exit a la llista.");
+            System.out.println(llistaAssociacions.obtenirInformacio());
         } catch (NullPointerException e) {
             System.err.println("Error: S'ha trobat unn valor nul inesperat.");
             e.printStackTrace();
@@ -408,11 +408,12 @@ public class Main {
         LocalDate dataRealitzacio = LocalDate.parse(dataString);
         System.out.println("Introdueix el nombre d'assistents: ");
         int nAss = Integer.parseInt(teclat.nextLine());
-        Xerrada xerrada = new Xerrada(codi, titol, null, null, "Xerrada", dataRealitzacio, nAss, null, null);
-        //
+        Xerrada xerrada = new Xerrada(codi, titol, null, null, "Xerrada", dataRealitzacio, nAss, new int[0], new Membre[0]);
+        
         try {
             llistaAccions.afegirAccio(xerrada);
             System.out.println("Xerrada afegida amb èxit a la llista.");
+            // Aqui fer un print per a mostrar la llista 
         } catch (NullPointerException e) {
             System.err.println("Error: S'ha trobat unn valor nul inesperat.");
             e.printStackTrace();
