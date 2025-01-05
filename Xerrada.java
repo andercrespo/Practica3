@@ -13,8 +13,8 @@ public class Xerrada extends Accio {
         super(codi, titol, associacionsOrganitzadores, responsable, tipus);
         this.dataRealitzacio = dataRealitzacio;
         this.nombreAssistents = nombreAssistents;
-        this.valoracions = valoracions;
-        this.impartidors = impartidors;
+        this.valoracions = (valoracions != null) ? valoracions : new int[0]; // Evita null
+        this.impartidors = (impartidors != null) ? impartidors : new Membre[0]; // Evita null
         this.numImpartidors = impartidors.length;
         this.numValoracions = valoracions.length;
     }
