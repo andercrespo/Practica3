@@ -15,11 +15,27 @@ public class Main {
         llegirFitxerText("accions.txt",llistaMembres,llistaAccions,llistaAssociacio);
         llegirFitxerText("associacions.txt",llistaMembres,llistaAccions,llistaAssociacio);
 
-        //funcio per a afegir als membres les associacions a les que pertanyen ya que quan els membres s'han creat encara no s'havien creat les associacions
+        // Verificar si el fitxer serialitzat ja existeix
+        File fitxerSerialitzat = new File("associacions.ser");
+        if (fitxerSerialitzat.exists()) {
+            // Llegir el fitxer serialitzat si existeix
+            try {
+                LlistaAssociacio[] arrayAssociacions = { llistaAssociacio };
+                GestorFitxers.llegirLlistaAssociacionsDesSerialitzat(arrayAssociacions);
+            } catch (Exception e) {
+                System.err.println("Error al llegir el fitxer serialitzat. Es carregarà des del fitxer de text.");
+                // Si hi ha un error, carregar des del fitxer de text com a fallback
+                llegirFitxerText("associacions.txt", llistaMembres, llistaAccions, llistaAssociacio);
+            }
+        } else {
+            // Llegir des del fitxer de text la primera vegada
+            llegirFitxerText("associacions.txt", llistaMembres, llistaAccions, llistaAssociacio);
+            System.out.println("Associacions carregades des del fitxer de text.");
+        }
+
+        // Funcions per a afegir associacions als membres i accions
         llegirFitxerText2("membres.txt", llistaMembres, llistaAccions, llistaAssociacio);
-        //funcio per a afegir a les accions les associacions organitzadores ya que quan les accions s'han creat encara no s'havien creat les associacions
         llegirFitxerText3("accions.txt", llistaMembres, llistaAccions, llistaAssociacio);
-        //
         mostraMenu();
         int opcio = Integer.parseInt(teclat.nextLine());
 
@@ -80,7 +96,25 @@ public class Main {
             mostraMenu();
             opcio = Integer.parseInt(teclat.nextLine());
         }
-        System.out.println("Sortint de l'aplicació.");
+        System.out.println("Vols guardar els canvis abans de sortir? (S/N)");
+        String respostaGuardar = teclat.nextLine().trim().toUpperCase();
+
+        if ("S".equals(respostaGuardar)) {
+            // Guardar membres.txt
+            GestorFitxers.guardarFitxerText("membres.txt", llistaMembres, null);
+        
+            // Guardar accions.txt
+            GestorFitxers.guardarFitxerText("accions.txt", null, llistaAccions);
+        
+            // Serialitzar associacions a associacions.ser
+            GestorFitxers.guardarLlistaAssociacionsASerialitzat(new LlistaAssociacio[]{llistaAssociacio});
+            System.out.println("Associacions guardades correctament al fitxer serialitzat: associacions.ser");
+            
+        
+            System.out.println("Totes les dades s'han guardat correctament.");
+        } else {
+            System.out.println("Sortint sense guardar els canvis.");
+        }
     }
 
     public static void mostraMenu() {
