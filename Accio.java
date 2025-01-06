@@ -52,12 +52,22 @@ public class Accio {
 
     public String obtenirInformacio() {
         String info = "Títol: " + titol + "\nCodi: " + codi + "\nAssociacions Organitzadores: ";
+        boolean hiHaAssociacions = false;
+        String coma = "";
+    
         for (int i = 0; i < tamany; i++) {
-            info += associacionsOrganitzadores[i].getNom() + ", ";
+            if (associacionsOrganitzadores[i] != null) {
+                info += coma + associacionsOrganitzadores[i].getNom();
+                coma = ", "; 
+                hiHaAssociacions = true;
+            }
         }
-        if (tamany > 0) {
-            info = info.substring(0, info.length() - 2);
+    
+        // Si no hi ha associacions, afegir text per defecte
+        if (!hiHaAssociacions) {
+            info += "Cap associació registrada.";
         }
+    
         return info;
     }
 }
