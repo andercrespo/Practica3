@@ -7,17 +7,39 @@ import java.io.ObjectOutputStream;
 
 public class GestorFitxers {
 
-    public static void guardarFitxerText(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions) {
+    public static void guardarFitxerText(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions, LlistaAssociacio llistaAssociacio) {
+        if (nomFitxer == null || nomFitxer.trim().isEmpty()) {
+            System.out.println("El nom del fitxer no és vàlid.");
+            return;
+        }
+    
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomFitxer))) {
-            if ("membres.txt".equals(nomFitxer)) {
-                for (Membre membre : llistaMembres.getMembres()) {
-                    writer.write(membre.toString());
-                    writer.newLine();
+            if ("membres.txt".equalsIgnoreCase(nomFitxer.trim())) {
+                if (llistaMembres != null && llistaMembres.getMembres() != null) {
+                    for (Membre membre : llistaMembres.getMembres()) {
+                        if (membre != null) {
+                            writer.write(membre.toString());
+                            writer.newLine();
+                        }
+                    }
                 }
-            } else if ("accions.txt".equals(nomFitxer)) {
-                for (Accio accio : llistaAccions.getAccions()) {
-                    writer.write(accio.toString());
-                    writer.newLine();
+            } else if ("accions.txt".equalsIgnoreCase(nomFitxer.trim())) {
+                if (llistaAccions != null && llistaAccions.getAccions() != null) {
+                    for (Accio accio : llistaAccions.getAccions()) {
+                        if (accio != null) {
+                            writer.write(accio.toString());
+                            writer.newLine();
+                        }
+                    }
+                }
+            } else if ("associacions.txt".equalsIgnoreCase(nomFitxer.trim())) {
+                if (llistaAssociacio != null && llistaAssociacio.getAssociacions() != null) {
+                    for (Associacio associacio : llistaAssociacio.getAssociacions()) {
+                        if (associacio != null) {
+                            writer.write(associacio.toString());
+                            writer.newLine();
+                        }
+                    }
                 }
             } else {
                 System.out.println("El nom del fitxer no és vàlid.");
