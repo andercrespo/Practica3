@@ -49,40 +49,36 @@ public class GestorFitxers {
         }
     }
 
-    public static Object[] convertirSerialitzatEnLlista(String cadena) {
-        cadena = cadena.trim();
-        if (cadena.startsWith("[") && cadena.endsWith("]")) {
-            cadena = cadena.substring(1, cadena.length() - 1).trim();
-        } else {
-            throw new IllegalArgumentException("El format de la cadena no és vàlid.");
-        }
-        if (cadena.isEmpty()) {
-            return new Object[0];
-        }
-        String[] elements = cadena.split(",");
-        Object[] resultat = new Object[elements.length];
-        for (int i = 0; i < elements.length; i++) {
-            String element = elements[i].trim();
-            try {
-                resultat[i] = Integer.parseInt(element);
-            } catch (NumberFormatException e) {
-                resultat[i] = element;
+    public static void llegirLlistaAssociacionsDesSerialitzat(LlistaAssociacio[] llista) {
+        ObjectInputStream inputFile;
+        try {
+            inputFile = new ObjectInputStream(new FileInputStream("associacions.ser"));
+            for (int i = 0; i < llista.length; i++) {
+                llista[i] = (LlistaAssociacio) inputFile.readObject();
             }
-        }
-        return resultat;
+            inputFile.close();
+            System.out.println("Les associacions s'han carregat correctament des del fitxer: associacions.ser");
+        } catch (IOException e) {
+            System.out.println("Error en l'arxiu d'entrada: " + e.getMessage());
+            } catch (ClassNotFoundException e) {
+                System.out.println("Error, no es troba la classe LlistaAssociacio: " + e.getMessage());
+            } catch (ClassCastException e) {
+                System.out.println("Error, el format de l'arxiu no és correcte per la definició actual de la classe LlistaAssociacio: " + e.getMessage());
+            }
     }
 
-    public static File convertirLlistaASerialitzat(String nomFitxer, LlistaAssociacio llistaAssociacions) {
-        File fitxer = new File(nomFitxer);
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fitxer))) {
-            // Escriure l'objecte serialitzat al fitxer
-            oos.writeObject(llistaAssociacions);
-        } catch (Exception e) {
-            System.err.println("Error al serialitzar la llista: " + e.getMessage());
-            e.printStackTrace();
+    public static void guardarLlistaAssociacionsASerialitzat(LlistaAssociacio[] llista) {
+        ObjectOutputStream outputFile;
+        try {
+            outputFile = new ObjectOutputStream(new FileOutputStream("associacions.ser"));
+            for (int i = 0; i < llista.length; i++) {
+                outputFile.writeObject(llista[i]);
+            }
+            outputFile.close();
+            System.out.println("Les associacions s'han guardat correctament al fitxer: associacions.ser");
+        } catch (IOException e) {
+            System.out.println("Error en l'arxiu de sortida: " + e.getMessage());
         }
-
-        return fitxer;
     }
 }
