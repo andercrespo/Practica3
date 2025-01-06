@@ -1,3 +1,7 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 public class LlistaAssociacio {
     private Associacio[] associacions;
     private int capacitat;
