@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Associacio {
+public class Associacio implements Serializable{
     private String nom;
     private String correuContacte;
     private String[] titulacions;
@@ -11,6 +12,8 @@ public class Associacio {
     private Alumne tresorer;
 
     private int numTitulacions;
+    static final long serialVersionUID = 1;
+
 
     //Constructor//
     public Associacio(String nom, String correuContacte, String[] titulacions, LlistaMembres membres, LlistaMembres membresActius, Alumne president, Alumne secretari, Alumne tresorer) {
@@ -24,6 +27,7 @@ public class Associacio {
         this.tresorer = tresorer;
         this.numTitulacions = this.titulacions.length;  
     }
+    
 
     //Getters//
     public String getNom(){
