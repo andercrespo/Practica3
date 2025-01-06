@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -36,6 +37,8 @@ public class Main {
         // Funcions per a afegir associacions als membres i accions
         llegirFitxerText2("membres.txt", llistaMembres, llistaAccions, llistaAssociacio);
         llegirFitxerText3("accions.txt", llistaMembres, llistaAccions, llistaAssociacio);
+
+
         mostraMenu();
         int opcio = Integer.parseInt(teclat.nextLine());
 
@@ -92,10 +95,12 @@ public class Main {
                     break;
                 case 17:
                     opcio17(llistaAccions);
+                    break;
             }
             mostraMenu();
             opcio = Integer.parseInt(teclat.nextLine());
         }
+
         System.out.println("Vols guardar els canvis abans de sortir? (S/N)");
         String respostaGuardar = teclat.nextLine().trim().toUpperCase();
 
@@ -116,6 +121,7 @@ public class Main {
             System.out.println("Sortint sense guardar els canvis.");
         }
     }
+
 
     public static void mostraMenu() {
         System.out.println("\n\nOpcions del menú:");
@@ -610,39 +616,41 @@ public class Main {
     
 
     public static void opcio13(LlistaAccions llistaAccions) {
-        //
-        System.out.println("Introdueix el nombre d'assistents: ");
-        int nAss = Integer.parseInt(teclat.nextLine());
-        //
         try {
             Accio[] accions = llistaAccions.getAccions();
-            Xerrada[] xerrades = new Xerrada[accions.length];
-            int index=0;
-            for (int i = 0; i < accions.length; i++) {
-                if (accions[i] != null){
-                    if (accions[i].esXerrada()) {
-                        xerrades[index] = (Xerrada) accions[i];
-                        index++;
+            Xerrada xerradaMax = null; // Para guardar la xerrada con más asistentes
+            int maxAssistents = 0; // Comenzamos con 0 asistentes
+    
+            for (Accio accio : accions) {
+                if (accio != null && accio.esXerrada()) {
+                    Xerrada xerrada = (Xerrada) accio;
+                    int nombreAssistents = xerrada.obtenirNombreAssistents();
+                    if (nombreAssistents > maxAssistents) {
+                        xerradaMax = xerrada;
+                        maxAssistents = nombreAssistents; // Actualizamos el máximo
                     }
                 }
             }
-            for (Xerrada xerrada : xerrades) {
-                if (xerrada != null && xerrada.obtenirNombreAssistents() > nAss) {
-                    Accio accio = xerrada;
-                    System.out.println(accio.obtenirInformacio());
-                }
+    
+            // Mostrar la xerrada con más asistentes
+            if (xerradaMax != null) {
+                System.out.println("Xerrada amb més assistents:");
+                System.out.println(xerradaMax.obtenirTitol());
+            } else {
+                System.out.println("No s'ha trobat cap xerrada.");
             }
         } catch (NullPointerException e) {
-            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
+            System.err.println("Error: S'ha trobat un valor nul inesperat.");
             e.printStackTrace();
         } catch (ClassCastException e) {
-            System.err.println("Error: No s'ha pogut convertir l'objecte");
+            System.err.println("Error: No s'ha pogut convertir l'objecte.");
             e.printStackTrace();
         } catch (Exception e) {
             System.err.println("Error inesperat: " + e.getMessage());
             e.printStackTrace();
         }
     }
+    
     
 
     public static void opcio14(LlistaAccions llistaAccions) {
@@ -1226,6 +1234,7 @@ public class Main {
             System.err.println("Error al processar dades numèriques: " + e.getMessage());
         }
     }
+
     public static void processarAccio2(String[] dades, LlistaAccions llistaAccions, LlistaMembres llistaMembres, LlistaAssociacio llistaAssociacio) {
         String codi = dades[0];
         String titol = dades[1];
