@@ -332,11 +332,11 @@ public class Main {
     
                 System.out.println("Introdueix l'associacio a la que es vol afegir el membre: ");
                 String associacio = teclat.nextLine();
-    
+                
                 Associacio[] associacions = llistaAssociacions.getAssociacions();
                 int i = 0;
                 boolean trobada = false;
-                while (i < associacions.length && !trobada) {
+                while (i < llistaAssociacions.getTamany() && !trobada) {
                     if (associacio.equalsIgnoreCase(associacions[i].getNom())) {
                         trobada = true;
                     } else {
@@ -346,11 +346,35 @@ public class Main {
                 if (!trobada) {
                     throw new IllegalArgumentException("No s'ha trobat l'associació: " + associacio);
                 }
-    
                 LlistaAssociacio associacionsPertany = new LlistaAssociacio(3);
                 associacionsPertany.afegirAssociacio(associacions[i]);
-                Membre nouMembre = new Membre(alies, correu, dataAlta, null, associacionsPertany, tipus);
-                associacions[i].afegirMembre(nouMembre);
+
+                if(tipus.equalsIgnoreCase("Professor")){
+                    System.out.println("Introdueix el departament al que pertany el membre: ");
+                    String departament = teclat.nextLine();
+
+                    System.out.println("Introdueix el despatx del membre: ");
+                    int despatx = Integer.parseInt(teclat.nextLine());
+
+                    Professor nouProfessor = new Professor(alies, correu, dataAlta, null, associacionsPertany, tipus, departament, despatx);
+                    Membre nouMembre= nouProfessor;
+                    associacions[i].afegirMembre(nouMembre);
+                }
+                else if(tipus.equalsIgnoreCase("Alumne")){
+                    System.out.println("Introdueix l'ensenyament del membre: ");
+                    String enseyament = teclat.nextLine();
+
+                    System.out.println("Introdueix els anys que porta a l'ETSE el membre: ");
+                    int anysETSE = Integer.parseInt(teclat.nextLine());
+                    
+                    System.out.println("Esta graduat?(true/false): ");
+                    boolean graduat = Boolean.parseBoolean(teclat.nextLine());
+
+                    Alumne nouAlumne = new Alumne(alies, correu, dataAlta, null, associacionsPertany, tipus, enseyament, anysETSE, graduat);
+                    Membre nouMembre = nouAlumne;
+                    associacions[i].afegirMembre(nouMembre);
+                }
+    
     
                 System.out.println("Membre nou afegit amb èxit a l'associació.");
     
@@ -559,15 +583,19 @@ public class Main {
         try {
             Accio[] accions = llistaAccions.getAccions();
             Xerrada[] xerrades = new Xerrada[accions.length];
+            int index=0;
             for (int i = 0; i < accions.length; i++) {
                 if (accions[i] != null){
-                if (accions[i].esXerrada()) {
-                    xerrades[xerrades.length - 1] = (Xerrada) accions[i];
-                }}
+                    if (accions[i].esXerrada()) {
+                        xerrades[index] = (Xerrada) accions[i];
+                        index++;
+                    }
+                }
             }
             for (Xerrada xerrada : xerrades) {
                 if (xerrada != null && xerrada.obtenirNombreAssistents() > nAss) {
-                    System.out.println(xerrada.obtenirInformacioDetallada());
+                    Accio accio = xerrada;
+                    System.out.println(accio.obtenirInformacio());
                 }
             }
         } catch (NullPointerException e) {
@@ -586,18 +614,20 @@ public class Main {
     public static void opcio14(LlistaAccions llistaAccions) {
         try {
             Accio[] accions = llistaAccions.getAccions();
-            Xerrada[] xerrades = new Xerrada[accions.length];
-            for (int i = 0; i < accions.length; i++) {
-                if (accions[i] != null){
-                if (accions[i].esXerrada()) {
-                    xerrades[xerrades.length - 1] = (Xerrada) accions[i];
-                }}
-            }
-            for (int i = 0; i < xerrades.length; i++) {
-                if (xerrades[i] != null) {
-                    System.out.println((i + 1) + ". " + xerrades[i].obtenirInformacioDetallada());
+            Xerrada[] xerrades = new Xerrada[llistaAccions.getTamany()];
+            int index = 0;
+            for (int i = 0; i < llistaAccions.getTamany(); i++) {
+                if (accions[i] != null && accions[i].esXerrada()) {
+                    xerrades[index] = (Xerrada) accions[i];
+                    index++;
                 }
             }
+            int n = 1;
+            for (int i = 0; i < index; i++) {
+                System.out.println(n + ". " + xerrades[i].obtenirTitol());
+                n++;
+            }
+
             System.out.print("Digues el número de la xerrada que vols valorar: ");
             int indexXerrada = Integer.parseInt(teclat.nextLine()) - 1;
             if (indexXerrada < 0 || indexXerrada >= xerrades.length || xerrades[indexXerrada] == null) {
@@ -624,7 +654,7 @@ public class Main {
     }
     
 
-    public static String opcio15(LlistaAccions llistaAccions) {
+    public static void opcio15(LlistaAccions llistaAccions) {
         String mesValorada = null;
         double maxValoracio = 0;
         int numValoracionsMax = 0;
@@ -659,7 +689,6 @@ public class Main {
         } else {
             System.out.println("La xerrada més valorada és: " + mesValorada);
         }
-        return mesValorada;
     }
 
     public static void opcio16(LlistaAccions llistaAccions, LlistaMembres llistaMembres) {
@@ -733,7 +762,7 @@ public class Main {
         LocalDate data = LocalDate.parse(dataString);
         //
         Accio[] accions = llistaAccions.getAccions();
-        int n = accions.length;
+        int n=llistaAccions.getTamany();
         for (int i = 0; i < n; i++) {
             if (accions[i] != null && accions[i].esDemostracio()) {
                 Demostracio demostracio = null;
@@ -744,10 +773,10 @@ public class Main {
                     continue; 
                 }
                 if (demostracio != null) {
-                    if (demostracio.esValida() || 
-                            (demostracio.getData() != null && demostracio.getData().isBefore(data))) {
+                    if (demostracio.esValida() && (demostracio.getData() != null && demostracio.getData().isBefore(data))) {
                         for (int j = i; j < n - 1; j++) {
                             accions[j] = accions[j + 1];
+                            System.out.println("Demostracio "+accions[j+1].obtenirCodi()+" donada de baixa");
                         }
                         accions[n - 1] = null;
                         n--;
@@ -1037,6 +1066,7 @@ public class Main {
     }
     //
     public static void llegirFitxerText2(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions, LlistaAssociacio llistaAssociacio) {
+        llistaMembres.buidarLlista();
         try (BufferedReader lector = new BufferedReader(new FileReader(nomFitxer))) {
             String linia;
             while ((linia = lector.readLine()) != null) {
@@ -1149,6 +1179,7 @@ public class Main {
     
     //
     public static void llegirFitxerText3(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions, LlistaAssociacio llistaAssociacio) {
+        llistaAccions.buidarLlista();
         try (BufferedReader lector = new BufferedReader(new FileReader(nomFitxer))) {
             String linia;
             while ((linia = lector.readLine()) != null) {

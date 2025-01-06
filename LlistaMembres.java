@@ -16,6 +16,11 @@ public class LlistaMembres {
         return tamany;
     }
 
+    public void buidarLlista(){
+        this.membres=new Membre[capacitat];
+        this.tamany=0;
+    }
+
     public void aumentaTamany(){
         tamany++;
     }
@@ -25,22 +30,15 @@ public class LlistaMembres {
     }
 
     public void afegirMembre(Membre membre) {
-        if (tamany == capacitat) {
-            capacitat = capacitat * 2;
-            Membre[] llistaMembreNova = new Membre[capacitat];
-            for (int i = 0; i < tamany; i++) {
-                llistaMembreNova[i] = membres[i];
-            }
-            llistaMembreNova[tamany] = membre;
-            membres = llistaMembreNova;
-        } else {
-            membres[tamany] = membre;
+        capacitat++;
+        Membre[] nouMembres = new Membre[capacitat];
+        for (int i = 0; i < membres.length; i++) {
+            nouMembres[i] = membres[i];
         }
-        aumentaTamany();
-    }
-    
-
- 
+        nouMembres[tamany] = membre;
+        membres = nouMembres;
+        tamany++;
+    }    
 
     public boolean eliminarMembre(String alies){
         boolean trobat=false;

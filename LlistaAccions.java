@@ -19,6 +19,14 @@ public class LlistaAccions {
         return accions;
     }
 
+    public void setAccions(Accio[] accions){
+        this.accions=accions;
+    }
+
+    public void buidarLlista(){
+        this.accions=new Accio[capacitat];
+        this.tamany=0;
+    }
 
     public void afegirAccio(Accio accio) {
         if (tamany == capacitat) {
