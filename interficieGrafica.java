@@ -1,5 +1,6 @@
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
 import java.awt.GridLayout;
 
 
@@ -23,4 +24,5 @@ public class interficieGrafica extends JFrame{
             this.add(new JButton("Opció "+(i+1)));
         }
     }
+
 }

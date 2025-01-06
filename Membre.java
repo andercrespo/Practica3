@@ -86,18 +86,16 @@ public class Membre {
     }
 
     public boolean potAfegirAssociacio(){
-        if(associacions==null){
-            return true;
+        boolean esPotAfegir=false;
+        if(associacions.getTamany()<3){
+            esPotAfegir = true;
         }
-        return associacions.getTamany()<3;
+        return esPotAfegir;
     }
 
-    public void afegirAssociacio(Associacio associacio) {
-        if (potAfegirAssociacio()) {
-            if (associacions == null) {
-                associacions = new LlistaAssociacio(3); 
-            }
-            associacions.afegirAssociacio(associacio);
+    public void afegirAssociacio(Associacio associacio){
+        if(potAfegirAssociacio()==true){
+            afegirAssociacio(associacio);
         }
     }
     
@@ -106,6 +104,10 @@ public class Membre {
     }
 
     public String obtenirInformacio(){
-        return(alies+", "+correu+", data d'alta:"+dataAlta[0].getDayOfMonth()+"-"+dataAlta[0].getMonthValue()+"-"+dataAlta[0].getYear()+", "+tipus);
+        return(alies+", "+correu+", "+dataAlta+", "+dataBaixa+", "+associacions+", "+tipus);
+    }
+
+    public String guardarFitxer(){
+        return(alies+";"+correu+";"+dataAlta[0]+"/"+dataAlta[1]+"/"+dataAlta[2]+";"+dataBaixa[0]+"/"+dataBaixa[1]+"/"+dataBaixa[2]+";"+associacions.getAssociacions()[0]+"/"+associacions.getAssociacions()[1]+"/"+associacions.getAssociacions()[2]+";"+tipus+";");
     }
 }

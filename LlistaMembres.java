@@ -1,3 +1,4 @@
+
 public class LlistaMembres {
     private Membre[] membres;
     private int tamany, capacitat;
