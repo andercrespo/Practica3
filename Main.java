@@ -336,13 +336,17 @@ public class Main {
                 Associacio[] associacions = llistaAssociacions.getAssociacions();
                 int i = 0;
                 boolean trobada = false;
-                while (!trobada) {
+                while (i < associacions.length && !trobada) {
                     if (associacio.equalsIgnoreCase(associacions[i].getNom())) {
                         trobada = true;
                     } else {
                         i++;
                     }
                 }
+                if (!trobada) {
+                    throw new IllegalArgumentException("No s'ha trobat l'associació: " + associacio);
+                }
+    
                 LlistaAssociacio associacionsPertany = new LlistaAssociacio(3);
                 associacionsPertany.afegirAssociacio(associacions[i]);
                 Membre nouMembre = new Membre(alies, correu, dataAlta, null, associacionsPertany, tipus);
@@ -357,26 +361,34 @@ public class Main {
                 Membre[] membres = llistaMembres.getMembres();
                 int i = 0;
                 boolean trobat = false;
-                while (!trobat) {
+                while (i < membres.length && !trobat) {
                     if (alies.equalsIgnoreCase(membres[i].getAlies())) {
                         trobat = true;
                     } else {
                         i++;
                     }
                 }
+                if (!trobat) {
+                    throw new IllegalArgumentException("No s'ha trobat el membre: " + alies);
+                }
+    
                 System.out.println("Introdueix l'associacio a la que es vol afegir el membre: ");
                 String associacio2 = teclat.nextLine();
     
                 Associacio[] associacions2 = llistaAssociacions.getAssociacions();
                 int j = 0;
                 boolean trobada = false;
-                while (!trobada) {
+                while (j < associacions2.length && !trobada) {
                     if (associacio2.equalsIgnoreCase(associacions2[j].getNom())) {
                         trobada = true;
                     } else {
                         j++;
                     }
                 }
+                if (!trobada) {
+                    throw new IllegalArgumentException("No s'ha trobat l'associació: " + associacio2);
+                }
+    
                 membres[i].afegirAssociacio(associacions2[j]);
                 associacions2[j].afegirMembre(membres[i]);
                 System.out.println("Membre existent afegit amb èxit a l'associació.");
@@ -390,6 +402,8 @@ public class Main {
         } catch (IndexOutOfBoundsException e) {
             System.err.println("Error: Accés fora dels límits de la llista.");
             e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
         } catch (Exception e) {
             System.err.println("Error inesperat: " + e.getMessage());
             e.printStackTrace();
@@ -611,85 +625,107 @@ public class Main {
     
 
     public static String opcio15(LlistaAccions llistaAccions) {
+        String mesValorada = null;
+        double maxValoracio = 0;
+        int numValoracionsMax = 0;
+    
         try {
             Accio[] accions = llistaAccions.getAccions();
-            double maxValoracio = 0;
-            String mesValorada = null;
-            int numValoracions = 0;
-            for (int i = 0; i < accions.length; i++) {
-                Xerrada xerrada = (Xerrada) accions[i];
-                if (xerrada.obtenirMitjanaValoracions() >= maxValoracio) {
-                    if (xerrada.obtenirMitjanaValoracions() == maxValoracio) {
-                        if (xerrada.getNumValoracions() > numValoracions) {
-                            maxValoracio = xerrada.obtenirMitjanaValoracions();
-                            mesValorada = accions[i].obtenirCodi();
-                            numValoracions = xerrada.getNumValoracions();
-                        }
-                    } else {
-                        maxValoracio = xerrada.obtenirMitjanaValoracions();
-                        mesValorada = accions[i].obtenirCodi();
-                        numValoracions = xerrada.getNumValoracions();
+            
+            for (Accio accio : accions) {
+                if (accio instanceof Xerrada) {
+                    Xerrada xerrada = (Xerrada) accio;
+                    double mitjanaValoracions = xerrada.obtenirMitjanaValoracions();
+                    int numValoracionsActual = xerrada.getNumValoracions();
+    
+                    if (mitjanaValoracions > maxValoracio || 
+                       (mitjanaValoracions == maxValoracio && numValoracionsActual > numValoracionsMax)) {
+                        maxValoracio = mitjanaValoracions;
+                        numValoracionsMax = numValoracionsActual;
+                        mesValorada = xerrada.obtenirCodi();
                     }
                 }
             }
-            return mesValorada;
         } catch (NullPointerException e) {
-            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
-            e.printStackTrace();
-        } catch (ClassCastException e) {
-            System.err.println("Error: No s'ha pogut convertir l'objecte");
+            System.err.println("Error: S'ha trobat un valor nul inesperat.");
             e.printStackTrace();
         } catch (Exception e) {
             System.err.println("Error inesperat: " + e.getMessage());
             e.printStackTrace();
         }
-        return null;
+    
+        if (mesValorada == null) {
+            System.out.println("No hi ha cap xerrada valorada.");
+        } else {
+            System.out.println("La xerrada més valorada és: " + mesValorada);
+        }
+        return mesValorada;
+    }
+
+    public static void opcio16(LlistaAccions llistaAccions, LlistaMembres llistaMembres) {
+        System.out.println("Introdueix el nom del membre: ");
+        String nom = teclat.nextLine();
+        Membre[] membres = llistaMembres.getMembres();
+        Membre membre = null;
+    
+        // Buscar el membre per alies
+        for (Membre m : membres) {
+            if (m != null && m.getAlies().equalsIgnoreCase(nom)) {
+                membre = m;
+                break;
+            }
+        }
+    
+        if (membre == null) {
+            System.out.println("Membre no trobat.");
+            return;
+        }
+    
+        try {
+            Accio[] accions = llistaAccions.getAccions();
+            boolean capXerrada = true;
+    
+            for (int i = 0; i < accions.length; i++) {
+                if (accions[i] != null && accions[i].esXerrada()) {
+                    Xerrada xerrada = (Xerrada) accions[i];
+                    boolean jaMostrada = false;
+    
+                    // Verificar si una charla con la misma información ya fue mostrada
+                    String infoActual = xerrada.obtenirInformacio();
+                    for (int j = 0; j < i; j++) {
+                        if (accions[j] != null && accions[j].esXerrada()) {
+                            Xerrada xerradaAnterior = (Xerrada) accions[j];
+                            if (xerradaAnterior.obtenirInformacio().equals(infoActual)) {
+                                jaMostrada = true;
+                                break;
+                            }
+                        }
+                    }
+    
+                    // Si no está mostrada, comprobar los impartidors
+                    if (!jaMostrada) {
+                        Membre[] impartidors = xerrada.getImpartidors();
+                        for (Membre impartidor : impartidors) {
+                            if (impartidor != null && impartidor.equals(membre)) {
+                                System.out.println("Xerrada: " + infoActual);
+                                capXerrada = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+    
+            if (capXerrada) {
+                System.out.println("No s'han trobat xerrades per a aquest membre.");
+            }
+    
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
-
-    public static void opcio16(LlistaAccions llistaAccions,LlistaMembres llistaMembres) {
-        //Demanar el membre
-        System.out.println("Introdueix el nom del membre: ");
-        String nom=teclat.nextLine();
-        int i=0;
-        boolean trobat =false;
-        Membre[] membres = llistaMembres.getMembres();
-        Membre membre=null;
-        while (!trobat && i<membres.length){
-            if(membres[i].getAlies().equalsIgnoreCase(nom)){
-                membre=membres[i];
-                trobat=true;
-            }
-            else{
-                i++;
-            }
-        }
-        //
-        try {
-            Accio[] accions = llistaAccions.getAccions();
-            for (int j = 0; j < accions.length; j++) {
-                if (accions[i].esXerrada()) {
-                    Xerrada xerrada = (Xerrada) accions[j];
-                    Membre[] impartidors = xerrada.getImpartidors();
-                    for (int k = 0; k < impartidors.length; k++) {
-                        if (impartidors[k].equals(membre)) {
-                            System.out.println("Xerrada: " + accions[j].obtenirInformacio());
-                        }
-                    }
-                }
-            }
-        } catch (NullPointerException e) {
-            System.err.println("Error: S'ha trobat unn valor nul inesperat.");
-            e.printStackTrace();
-        } catch (ClassCastException e) {
-            System.err.println("Error: No s'ha pogut convertir l'objecte");
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("Error inesperat: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
     public static void opcio17(LlistaAccions llistaAccions) {
         //Demanar la data
         System.out.println("Introdueix la data inicial (format: yyyy-MM-dd): ");
