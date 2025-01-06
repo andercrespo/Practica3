@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 
 public class GestorFitxers {
 
-    public static void guardarFitxerText(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions, LlistaAssociacio llistaAssociacio) {
+    public static void guardarFitxerText(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions) {
         if (nomFitxer == null || nomFitxer.trim().isEmpty()) {
             System.out.println("El nom del fitxer no és vàlid.");
             return;
@@ -18,7 +18,7 @@ public class GestorFitxers {
                 if (llistaMembres != null && llistaMembres.getMembres() != null) {
                     for (Membre membre : llistaMembres.getMembres()) {
                         if (membre != null) {
-                            writer.write(membre.toString());
+                            writer.write(membre.toString()); // Retorna els atributs separats per ';'
                             writer.newLine();
                         }
                     }
@@ -27,16 +27,7 @@ public class GestorFitxers {
                 if (llistaAccions != null && llistaAccions.getAccions() != null) {
                     for (Accio accio : llistaAccions.getAccions()) {
                         if (accio != null) {
-                            writer.write(accio.toString());
-                            writer.newLine();
-                        }
-                    }
-                }
-            } else if ("associacions.txt".equalsIgnoreCase(nomFitxer.trim())) {
-                if (llistaAssociacio != null && llistaAssociacio.getAssociacions() != null) {
-                    for (Associacio associacio : llistaAssociacio.getAssociacions()) {
-                        if (associacio != null) {
-                            writer.write(associacio.toString());
+                            writer.write(accio.toString()); // Retorna els atributs separats per ';'
                             writer.newLine();
                         }
                     }
