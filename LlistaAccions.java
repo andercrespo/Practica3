@@ -97,7 +97,7 @@ public class LlistaAccions {
     public String obtenirInformacio() {
         String resultat = ""; 
         for (int i = 0; i < tamany; i++) {
-            resultat = resultat + accions[i].toString() + "\n";            
+            resultat = resultat + accions[i].obtenirInformacio() + "\n";            
         }
         return resultat;
     }
