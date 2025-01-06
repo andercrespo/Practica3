@@ -1,8 +1,9 @@
 import java.io.BufferedWriter;
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class GestorFitxers {
@@ -18,7 +19,7 @@ public class GestorFitxers {
                 if (llistaMembres != null && llistaMembres.getMembres() != null) {
                     for (Membre membre : llistaMembres.getMembres()) {
                         if (membre != null) {
-                            writer.write(membre.toString()); // Retorna els atributs separats per ';'
+                            writer.write(membre.guardarFitxer()); // Retorna els atributs separats per ';'
                             writer.newLine();
                         }
                     }
@@ -71,5 +72,5 @@ public class GestorFitxers {
         } catch (IOException e) {
             System.out.println("Error en l'arxiu de sortida: " + e.getMessage());
         }
-    }
+    }  
 }
