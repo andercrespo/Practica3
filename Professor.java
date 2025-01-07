@@ -32,4 +32,8 @@ public class Professor extends Membre{
 				+ "despatx:" + despatx;
     }
 
+    public String guardarFitxer(){
+        return(super.guardarFitxer()+departament+";"+despatx);
+    }
+
 }

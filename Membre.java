@@ -35,6 +35,10 @@ public class Membre {
         return dataBaixa;
     }
 
+    public String getTipus(){
+        return tipus;
+    }
+
     public boolean esProfessor() {
         return "Professor".equalsIgnoreCase(tipus);
     }
@@ -108,6 +112,7 @@ public class Membre {
     }
 
     public String guardarFitxer(){
+
         return(alies+";"+correu+";"+dataAlta[0]+"/"+dataAlta[1]+"/"+dataAlta[2]+";"+dataBaixa[0]+"/"+dataBaixa[1]+"/"+dataBaixa[2]+";"+associacions.getAssociacions()[0]+"/"+associacions.getAssociacions()[1]+"/"+associacions.getAssociacions()[2]+";"+tipus+";");
     }
 }

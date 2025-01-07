@@ -30,8 +30,8 @@ public class Alumne extends Membre {
         this.graduat = graduat;
     }
 
-    public String toString() {
-        return "Membre {" + "Àlies='" + getAlies() + '\'' + ", Correu='" + getCorreu() + '\'' + ", Ensenyament='" + getEnsenyament() + '\'' + '}';
+    public String guardarFitxer(){
+        return(super.guardarFitxer()+ensenyament+";"+anysETSE+";"+graduat);
     }
 
 }

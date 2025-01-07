@@ -23,6 +23,10 @@ public class Accio {
         return titol;
     }
 
+    public void setAssociacions(Associacio[] associacions){
+        this.associacionsOrganitzadores=associacions;
+    }
+
     public Associacio[] getAssociacionsOrganitzadores(){
         return associacionsOrganitzadores;
     }
