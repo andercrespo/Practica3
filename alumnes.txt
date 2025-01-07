@@ -14,6 +14,3 @@ Toni;toni@gmail.com;2023-01-10/null/null;null/null/null;AEEQ/null/null;Alumne;GE
 Elena;elena@gmail.com;2024-06-18/null/null;null/null/null;AEEE/null/null;Alumne;GEE;3;true
 Lazaro;lazaro@gmail.com;2024-05-11/2024-09-22/null;2024-07-08/null/null;AEEB/AEEE/null;Alumne;GEE;2;false
 Dan;dan@gmail.com;2023-09-10/null/null;null/null/null;AEEE/null/null;Alumne;GEE;2;false
-Ander;ander@gmail.com;2024-09-12/2022-01-01/2023-10-11;2024-06-06/null/null;AEEQ/AEEB/AEEE;Professor;DEIM;215
-Maria;maria@gmail.com;2023-12-05/2024-05-06/null;null/null/null;AEEI/AEESST/null;Professor;DEEEA;300
-Javier;javier@gmail.com;2023-11-02/2024-01-06/null;null/null/null;AEEQ/AEEB/null;Professor;DEIM;280
