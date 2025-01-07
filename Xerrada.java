@@ -13,10 +13,18 @@ public class Xerrada extends Accio {
         super(codi, titol, associacionsOrganitzadores, responsable, tipus);
         this.dataRealitzacio = dataRealitzacio;
         this.nombreAssistents = nombreAssistents;
-        this.valoracions = (valoracions != null) ? valoracions : new int[0]; // Evita null
+        if(valoracions==null){
+            this.valoracions=null;
+        }else{
+            this.valoracions = valoracions;
+        }
         this.impartidors = (impartidors != null) ? impartidors : new Membre[0]; // Evita null
         this.numImpartidors = impartidors.length;
-        this.numValoracions = valoracions.length;
+        if(valoracions==null){
+            this.numValoracions=0;
+        }else{
+            this.numValoracions = valoracions.length;
+        }
     }
 
     public LocalDate obtenirDataRealitzacio() {
@@ -83,5 +91,44 @@ public class Xerrada extends Accio {
                       "el nombre d'assistents és " + nombreAssistents + " i " +
                       "el nombre de valoracions és " + obtenirValoracionsTotals();
         return info;
+    }
+
+    public String guardarFitxer(){
+        String vals="";
+        String imp="";
+        if(valoracions==null){
+            if(impartidors==null){
+                return(super.guardarFitxer()+dataRealitzacio+";"+nombreAssistents+";null;null");
+            }
+            else{
+                for(int i=0;i<impartidors.length;i++){
+                    imp=imp+impartidors[i].getAlies();
+                    if(i!=(impartidors.length-1)){
+                        imp=imp+"/";
+                    }
+                }
+                return(super.guardarFitxer()+dataRealitzacio+";"+nombreAssistents+";null;"+imp);
+            }
+        }else{
+            for(int i=0;i<valoracions.length;i++){
+                vals=vals+valoracions[i];
+                if(i!=(valoracions.length-1)){
+                    vals=vals+"/";
+                }
+            }
+            if(impartidors==null){
+                return(super.guardarFitxer()+dataRealitzacio+";"+nombreAssistents+";"+vals+";"+"null");
+            }
+            else{
+                for(int i=0;i<impartidors.length;i++){
+                    imp=imp+impartidors[i].getAlies();
+                    if(i!=(impartidors.length-1)){
+                        imp=imp+"/";
+                    }
+                }
+            }
+            
+        }
+        return(super.guardarFitxer()+dataRealitzacio+";"+nombreAssistents+";"+vals+";"+imp);
     }
 }

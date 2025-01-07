@@ -112,7 +112,22 @@ public class Membre {
     }
 
     public String guardarFitxer(){
+        Associacio[] ass = new Associacio[3];
+        if(associacions==null){
+            return (alies+";"+correu+";"+dataAlta[0]+"/"+dataAlta[1]+"/"+dataAlta[2]+";"+dataBaixa[0]+"/"+dataBaixa[1]+"/"+dataBaixa[2]+";null/null/null;"+tipus+";");
+        }else{
+            ass =  associacions.getAssociacions();
+            if(ass[0]==null){
+                return (alies+";"+correu+";"+dataAlta[0]+"/"+dataAlta[1]+"/"+dataAlta[2]+";"+dataBaixa[0]+"/"+dataBaixa[1]+"/"+dataBaixa[2]+";null/null/null;"+tipus+";");
+            }
+            if(ass[1]==null){
+                return (alies+";"+correu+";"+dataAlta[0]+"/"+dataAlta[1]+"/"+dataAlta[2]+";"+dataBaixa[0]+"/"+dataBaixa[1]+"/"+dataBaixa[2]+";"+ass[0].getNom()+"/null/null;"+tipus+";");
+            }
+            if(ass[2]==null){
+                return (alies+";"+correu+";"+dataAlta[0]+"/"+dataAlta[1]+"/"+dataAlta[2]+";"+dataBaixa[0]+"/"+dataBaixa[1]+"/"+dataBaixa[2]+";"+ass[0].getNom()+"/"+ass[1].getNom()+"/null;"+tipus+";");
+            }
 
-        return(alies+";"+correu+";"+dataAlta[0]+"/"+dataAlta[1]+"/"+dataAlta[2]+";"+dataBaixa[0]+"/"+dataBaixa[1]+"/"+dataBaixa[2]+";"+associacions.getAssociacions()[0]+"/"+associacions.getAssociacions()[1]+"/"+associacions.getAssociacions()[2]+";"+tipus+";");
+        }
+        return (alies+";"+correu+";"+dataAlta[0]+"/"+dataAlta[1]+"/"+dataAlta[2]+";"+dataBaixa[0]+"/"+dataBaixa[1]+"/"+dataBaixa[2]+";"+ass[0].getNom()+"/"+ass[1].getNom()+"/"+ass[2].getNom()+";"+tipus+";");
     }
 }

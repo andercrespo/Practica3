@@ -18,7 +18,7 @@ public class Main {
         GestorFitxers.llegirFitxerText("demostracions.txt",llistaMembres,llistaAccions,llistaAssociacio);
         GestorFitxers.llegirFitxerText("associacions.txt",llistaMembres,llistaAccions,llistaAssociacio);
         GestorFitxers.revisarLlistaMembre(llistaMembres, llistaAssociacio);
-        GestorFitxers.revisarLlistaAccio(llistaAccions, llistaAssociacio);
+        GestorFitxers.revisarLlistaAccio(llistaAccions,llistaAssociacio,llistaMembres);
 
         // Verificar si el fitxer serialitzat ja existeix
         File fitxerSerialitzat = new File("associacions.ser");
@@ -70,10 +70,10 @@ public class Main {
                     opcio8(llistaAssociacio, llistaMembres);
                     break;
                 case 9:
-                    opcio9(llistaAccions);
+                    opcio9(llistaAccions, llistaMembres);
                     break;
                 case 10:
-                    opcio10(llistaAccions);
+                    opcio10(llistaAccions, llistaMembres);
                     break;
                 case 11:
                     opcio11(llistaAccions);
@@ -105,12 +105,12 @@ public class Main {
         String respostaGuardar = teclat.nextLine().trim().toUpperCase();
 
         if ("S".equals(respostaGuardar)) {
-            // Guardar membres.txt
+            // Guardar membres
             GestorFitxers.guardarFitxerText("alumnes.txt", llistaMembres,llistaAccions);
             GestorFitxers.guardarFitxerText("professors.txt", llistaMembres,llistaAccions);
-            // Guardar accions.txt
-            //GestorFitxers.guardarFitxerText("accions.txt", null, llistaAccions);
-        
+            //Guardar accions
+            GestorFitxers.guardarFitxerText("xerrades.txt", llistaMembres, llistaAccions);
+            GestorFitxers.guardarFitxerText("demostracions.txt", llistaMembres, llistaAccions);
             // Serialitzar associacions a associacions.ser
             //GestorFitxers.guardarLlistaAssociacionsASerialitzat(new LlistaAssociacio[]{llistaAssociacio});
             //System.out.println("Associacions guardades correctament al fitxer serialitzat: associacions.ser");
@@ -369,6 +369,7 @@ public class Main {
                 String tipus = teclat.nextLine();
     
                 LocalDate[] dataAlta = {LocalDate.now(), null, null}; // S'afegeix la data actual com a data d'alta
+                LocalDate[] dataBaixa ={null,null,null};
     
                 System.out.println("Introdueix l'associacio a la que es vol afegir el membre: ");
                 String associacio = teclat.nextLine();
@@ -396,9 +397,10 @@ public class Main {
                     System.out.println("Introdueix el despatx del membre: ");
                     int despatx = Integer.parseInt(teclat.nextLine());
 
-                    Professor nouProfessor = new Professor(alies, correu, dataAlta, null, associacionsPertany, tipus, departament, despatx);
+                    Professor nouProfessor = new Professor(alies, correu, dataAlta, dataBaixa, associacionsPertany, tipus, departament, despatx);
                     Membre nouMembre= nouProfessor;
                     associacions[i].afegirMembre(nouMembre);
+                    llistaMembres.afegirMembre(nouMembre);
                 }
                 else if(tipus.equalsIgnoreCase("Alumne")){
                     System.out.println("Introdueix l'ensenyament del membre: ");
@@ -410,9 +412,10 @@ public class Main {
                     System.out.println("Esta graduat?(true/false): ");
                     boolean graduat = Boolean.parseBoolean(teclat.nextLine());
 
-                    Alumne nouAlumne = new Alumne(alies, correu, dataAlta, null, associacionsPertany, tipus, enseyament, anysETSE, graduat);
+                    Alumne nouAlumne = new Alumne(alies, correu, dataAlta, dataBaixa, associacionsPertany, tipus, enseyament, anysETSE, graduat);
                     Membre nouMembre = nouAlumne;
                     associacions[i].afegirMembre(nouMembre);
+                    llistaMembres.afegirMembre(nouMembre);
                 }
     
     
@@ -475,7 +478,7 @@ public class Main {
     }
     
 
-    public static void opcio9(LlistaAccions llistaAccions) {
+    public static void opcio9(LlistaAccions llistaAccions, LlistaMembres llistaMembres) {
         //Demanar i crear la xerrada nova
         System.out.println("Introdueix el codi de la Xerrada: ");
         String codi = teclat.nextLine();
@@ -486,7 +489,73 @@ public class Main {
         LocalDate dataRealitzacio = LocalDate.parse(dataString);
         System.out.println("Introdueix el nombre d'assistents: ");
         int nAss = Integer.parseInt(teclat.nextLine());
-        Xerrada xerrada = new Xerrada(codi, titol, null, null, "Xerrada", dataRealitzacio, nAss, new int[0], new Membre[0]);
+        System.out.println("Introdueix el responsable: ");
+        String nomResponsable = teclat.nextLine();
+        Membre[] membres= llistaMembres.getMembres();
+        boolean trobat=false;
+        int i=0;
+        while(!trobat && i<llistaMembres.getTamany()){
+            if(membres[i].getAlies().equalsIgnoreCase(nomResponsable)){
+                trobat=true;
+            }
+            else{
+                i++;
+            }
+        }
+        Membre responsable= membres[i];
+        System.out.println("Introdueix el nombre d'impartidors(1 o 2 o 3): ");
+        int numImpartidors = Integer.parseInt(teclat.nextLine());
+        Membre[] impartidors = new Membre[numImpartidors];
+        if(numImpartidors==1){
+            System.out.println("Introdueix el nom d'un impartidor: ");
+            String nomImpartidor = teclat.nextLine();
+            membres= llistaMembres.getMembres();
+            trobat=false;
+            i=0;
+            while(!trobat && i<llistaMembres.getTamany()){
+                if(membres[i].getAlies().equalsIgnoreCase(nomImpartidor)){
+                    trobat=true;
+                }
+                else{
+                    i++;
+                }
+            }
+            impartidors[0]=membres[i];
+        }
+        if(numImpartidors==2){
+            System.out.println("Introdueix el nom d'un impartidor: ");
+            String nomImpartidor = teclat.nextLine();
+            membres= llistaMembres.getMembres();
+            trobat=false;
+            i=0;
+            while(!trobat && i<llistaMembres.getTamany()){
+                if(membres[i].getAlies().equalsIgnoreCase(nomImpartidor)){
+                    trobat=true;
+                }
+                else{
+                    i++;
+                }
+            }
+            impartidors[1]=membres[i];
+        }
+        if(numImpartidors==3){
+            System.out.println("Introdueix el nom d'un impartidor: ");
+            String nomImpartidor = teclat.nextLine();
+            membres= llistaMembres.getMembres();
+            trobat=false;
+            i=0;
+            while(!trobat && i<llistaMembres.getTamany()){
+                if(membres[i].getAlies().equalsIgnoreCase(nomImpartidor)){
+                    trobat=true;
+                }
+                else{
+                    i++;
+                }
+            }
+            impartidors[2]=membres[i];
+        }
+
+        Xerrada xerrada = new Xerrada(codi, titol, null, responsable, "Xerrada", dataRealitzacio, nAss, null, impartidors);
         
         try {
             llistaAccions.afegirAccio(xerrada);
@@ -501,7 +570,7 @@ public class Main {
         }
     }
     
-    public static void opcio10(LlistaAccions llistaAccions) {
+    public static void opcio10(LlistaAccions llistaAccions, LlistaMembres llistaMembres) {
         //Demanar i crear la demostració nova
         System.out.println("Introdueix el codi de la Demostració: ");
         String codi = teclat.nextLine();
@@ -516,11 +585,25 @@ public class Main {
         if(resposta1.equalsIgnoreCase("si")){
             esValida=true;
         }
+        System.out.println("Introdueix el responsable: ");
+        String nomResponsable = teclat.nextLine();
+        Membre[] membres= llistaMembres.getMembres();
+        boolean trobat=false;
+        int i=0;
+        while(!trobat && i<llistaMembres.getTamany()){
+            if(membres[i].getAlies().equalsIgnoreCase(nomResponsable)){
+                trobat=true;
+            }
+            else{
+                i++;
+            }
+        }
+        Membre responsable= membres[i];
         System.out.println("Introdueix el nombre de vegades oferta: ");
         int nVegOfer = Integer.parseInt(teclat.nextLine());
         System.out.println("Introdueix el cost dels materials: ");
         double costMater = Double.parseDouble(teclat.nextLine());
-        Demostracio demostracio = new Demostracio(codi, titol, null, null,"Demostració", dataDisseny, esValida, nVegOfer, costMater);
+        Demostracio demostracio = new Demostracio(codi, titol, null, responsable,"Demostració", dataDisseny, esValida, nVegOfer, costMater);
         //
         try {
             llistaAccions.afegirAccio(demostracio);

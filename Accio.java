@@ -75,9 +75,19 @@ public class Accio {
         return info;
     }
     
-    
-    
-    
-    
+    public String guardarFitxer(){
+        String ass="";
+        if(associacionsOrganitzadores==null){
+            return(codi+";"+titol+";null;"+responsable.getAlies()+";"+tipus+";");
+        }else{
+            for(int i=0;i<associacionsOrganitzadores.length;i++){
+                ass=ass+associacionsOrganitzadores[i].getNom();
+                if(i!=(associacionsOrganitzadores.length-1)){
+                    ass=ass+"/";
+                }
+            }
+        }
+        return(codi+";"+titol+";"+ass+";"+responsable.getAlies()+";"+tipus+";");
+    }
     
 }

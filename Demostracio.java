@@ -46,4 +46,8 @@ public class Demostracio extends Accio {
         return informacio;
     }
 
+    public String guardarFitxer(){
+        return(super.guardarFitxer()+dataDisseny+";"+esValida+";"+nombreVegadesOfertes+";"+costMaterials);
+    }
+
 }

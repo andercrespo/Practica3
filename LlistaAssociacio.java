@@ -26,6 +26,10 @@ public class LlistaAssociacio {
         this.associacions = associacions;
     }
 
+    public void aumentaTamany(){
+        tamany++;
+    }
+
     public void afegirAssociacio(Associacio associacio){
         if(capacitat==tamany){
             capacitat=capacitat*2;
@@ -33,15 +37,8 @@ public class LlistaAssociacio {
             System.arraycopy(associacions, 0, newAssociacions, 0, tamany);
             associacions = newAssociacions;
         }
-        int posicio=0;
-        while (posicio < tamany && associacions[posicio].getNom().compareTo(associacio.getNom())<0){
-            posicio++;
-        }
-        for (int i = tamany; i > posicio; i--) {
-            associacions[i] = associacions[i - 1];
-        }
         associacions[tamany] = associacio;
-        tamany++;
+        aumentaTamany();
     }
 
     public boolean eliminarAssociacio(String nom){
