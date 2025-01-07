@@ -11,6 +11,13 @@ import java.time.LocalDate;
 
 public class GestorFitxers {
 
+    /**
+     * Guarda informació en un fitxer de text en funció del seu nom i les dades proporcionades.
+     *
+     * @param nomFitxer       el nom del fitxer en el qual guardar la informació.
+     * @param llistaMembres   la llista de membres a escriure, si és aplicable.
+     * @param llistaAccions   la llista d'accions a escriure, si és aplicable.
+     */
     public static void guardarFitxerText(String nomFitxer, LlistaMembres llistaMembres,LlistaAccions llistaAccions) {
         if (nomFitxer == null || nomFitxer.trim().isEmpty()) {
             System.out.println("El nom del fitxer no és vàlid.");
@@ -66,6 +73,11 @@ public class GestorFitxers {
         }
     }
 
+    /**
+     * Llegeix una llista d'associacions d'un fitxer serialitzat.
+     *
+     * @param llista l'array de llistes d'associacions a omplir amb dades del fitxer.
+     */
     public static void llegirLlistaAssociacionsDesSerialitzat(LlistaAssociacio[] llista) {
         ObjectInputStream inputFile;
         try {
@@ -84,7 +96,11 @@ public class GestorFitxers {
             }
     }
 
-
+    /**
+     * Guarda una llista d'associacions en un fitxer serialitzat.
+     *
+     * @param llista l'array de llistes d'associacions a guardar en el fitxer.
+     */
     public static void guardarLlistaAssociacionsASerialitzat(LlistaAssociacio[] llista) {
         ObjectOutputStream outputFile;
         try {
@@ -99,7 +115,14 @@ public class GestorFitxers {
         }
     }
     
-    
+        /**
+     * Llegeix informació d'un fitxer de text i processa les dades segons el tipus de fitxer.
+     *
+     * @param nomFitxer         el nom del fitxer a llegir.
+     * @param llistaMembres     la llista de membres a actualitzar, si és aplicable.
+     * @param llistaAccions     la llista d'accions a actualitzar, si és aplicable.
+     * @param llistaAssociacio  la llista d'associacions a actualitzar, si és aplicable.
+     */
     public static void llegirFitxerText(String nomFitxer, LlistaMembres llistaMembres, LlistaAccions llistaAccions, LlistaAssociacio llistaAssociacio) {
         try (BufferedReader lector = new BufferedReader(new FileReader(nomFitxer))) {
             String linia;
@@ -212,6 +235,13 @@ public class GestorFitxers {
         llistaMembres.afegirMembre(professor);
     }
 
+        /**
+     * Processa una xerrada a partir de les dades proporcionades i l'afegeix a la llista d'accions.
+     *
+     * @param dades Un array de cadenes amb les dades de la xerrada (codi, títol, responsable, tipus, etc.).
+     * @param llistaAccions La llista d'accions on s'ha d'afegir la xerrada processada.
+     * @param llistaMembres La llista de membres disponibles per buscar responsables i impartidors.
+     */
     public static void processarXerrada(String[] dades, LlistaAccions llistaAccions, LlistaMembres llistaMembres) {
         String codi = dades[0];
         String titol = dades[1];
@@ -272,6 +302,13 @@ public class GestorFitxers {
         llistaAccions.afegirAccio(xerrada);
     }
 
+        /**
+     * Processa una demostració a partir de les dades proporcionades i l'afegeix a la llista d'accions.
+     *
+     * @param dades Un array de cadenes amb les dades de la demostració (codi, títol, responsable, etc.).
+     * @param llistaAccions La llista d'accions on s'ha d'afegir la demostració processada.
+     * @param llistaMembres La llista de membres disponibles per buscar el responsable.
+     */
     public static void processarDemostracio(String[] dades, LlistaAccions llistaAccions, LlistaMembres llistaMembres) {
         String codi = dades[0];
         String titol = dades[1];
@@ -302,6 +339,13 @@ public class GestorFitxers {
         llistaAccions.afegirAccio(demostracio);
     }
 
+        /**
+     * Processa una associació a partir de les dades proporcionades i l'afegeix a la llista d'associacions.
+     *
+     * @param dades Un array de cadenes amb les dades de l'associació (nom, correu, membres, etc.).
+     * @param llistaAssociacio La llista d'associacions on s'ha d'afegir la nova associació.
+     * @param llistaMembres La llista de membres disponibles per buscar membres associats i la junta directiva.
+     */
     public static void processarAssociacio(String[] dades, LlistaAssociacio llistaAssociacio, LlistaMembres llistaMembres){
         String nom = dades [0];
         String correuContacte = dades[1];
@@ -430,7 +474,13 @@ public class GestorFitxers {
         Associacio associacio = new Associacio(nom, correuContacte, titulacions, llistamembres, llistamembresActius, president, secretari, tresorer);
         llistaAssociacio.afegirAssociacio(associacio);
     }
-    //
+
+        /**
+     * Revisa i actualitza la llista de membres a partir de fitxers externs (alumnes i professors).
+     *
+     * @param llistaMembres La llista de membres que serà actualitzada amb la informació llegida.
+     * @param llistaAssociacio La llista d'associacions per identificar les associacions a les quals pertanyen els membres.
+     */
     public static void revisarLlistaMembre(LlistaMembres llistaMembres, LlistaAssociacio llistaAssociacio) {
         llistaMembres.buidarLlista();
         try (BufferedReader lector = new BufferedReader(new FileReader("alumnes.txt"))) {
