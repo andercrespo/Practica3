@@ -1,7 +1,3 @@
-/**
- * Representa una associació amb informació sobre el seu nom, contacte, titulacions,
- * membres i càrrecs directius. Permet gestionar membres, titulacions i càrrecs.
- */
 import java.io.Serializable;
 import java.time.LocalDate;
 
